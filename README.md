@@ -8,6 +8,7 @@ once loaded.
 ## Files
 - `index.html` — the whole app (self-contained)
 - `manifest.webmanifest` — makes it installable as an app
+- `sw.js` — offline support, so the app opens on the course with no signal
 - `icon-192.png`, `icon-512.png`, `apple-touch-icon.png` — home-screen icons
 
 ## Put it online with GitHub Pages (free)
@@ -33,3 +34,7 @@ backup file; **Import** restores it (handy when switching phones).
 ## Alternatives to GitHub Pages
 - **Netlify Drop** (app.netlify.com/drop) — drag the folder in, instant URL, no account needed to start.
 - **Cloudflare Pages** — similar, free.
+
+## Updating the app
+Repo → Add file → Upload files → drop in the new file(s) with the exact same name → Commit changes.
+GitHub replaces the old version; give it a minute, then close and reopen the app. Your rounds are untouched.

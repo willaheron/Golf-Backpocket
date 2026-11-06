@@ -182,7 +182,7 @@
   .yn{display:flex;gap:4px}
   .yn .sb{min-width:40px;flex:0 0 40px;height:36px;font-size:14px}
   .statline{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-  .miss{display:none;gap:4px;padding-left:8px;border-left:1px solid var(--line)}
+  .miss{display:none;gap:4px;flex-wrap:wrap}
   .miss.on{display:flex}
   .miss .sb{flex:0 0 auto;padding:0 11px;height:36px;font-size:13px;font-weight:700}
   .srow[data-tees] .sb{height:38px;font-size:13.5px}
@@ -199,6 +199,55 @@
   .feelstrip.on{display:block}
   .feelstrip b{color:var(--green-l);margin-right:4px}
   .toggle-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+  /* round flow */
+  body.playing .nav, body.playing .appbar{display:none}
+  body.playing{padding-bottom:calc(90px + env(safe-area-inset-bottom,0px))}
+  .play-top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;align-items:center;gap:10px;
+    background:var(--bg);padding:10px 0 12px;margin-top:-6px}
+  .iconbtn{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:8px 0;width:68px;
+    font-weight:600;font-size:14px;color:var(--ink)}
+  .pt-mid{flex:1;text-align:center;min-width:0}
+  .pt-course{font-weight:600;font-size:15.5px;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .pt-sub{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .feelstrip{margin:0 0 12px}
+  .hole-hero{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;background:linear-gradient(160deg,#2c2c2e,#000);
+    color:#f5f5f7;border-radius:var(--radius);padding:18px 18px 16px;margin-bottom:12px}
+  .hole-hero.fin{display:block}
+  .hh-lab{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:#8e8e93;font-weight:600;margin-bottom:4px}
+  .hh-num{font-size:64px;font-weight:600;letter-spacing:-.045em;line-height:.92}
+  .hh-of{font-size:12px;color:#a1a1a6;margin-top:8px}
+  .hh-mid{flex:1;padding-left:4px}
+  .parchips{display:flex;gap:5px}
+  .parchips button{width:34px;height:30px;border-radius:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);
+    color:#a1a1a6;font-weight:700;font-size:14px}
+  .parchips button.on{background:#f5f5f7;border-color:#f5f5f7;color:#1d1d1f}
+  .hh-tot{text-align:right}
+  .hh-tot .v{font-size:32px;font-weight:600;letter-spacing:-.03em;line-height:1}
+  .hh-tot .tp{font-size:13px;color:#c7c7cc;margin-top:3px;font-weight:600;min-height:18px}
+  .dots{display:flex;gap:5px;overflow-x:auto;padding:0 0 12px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .dots::-webkit-scrollbar{display:none}
+  .dot{flex:0 0 34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--card);font-size:13px;font-weight:700;color:var(--muted);padding:0}
+  .dot.done{background:var(--pill);color:var(--ink)}
+  .dot.cur{background:var(--green);border-color:var(--green);color:var(--on-primary)}
+  .hole-card .lab{margin-top:14px}
+  .srow.big .sb{height:58px;font-size:21px;border-radius:12px}
+  .play-bar{position:fixed;left:0;right:0;bottom:0;z-index:40;max-width:620px;margin:0 auto;display:flex;gap:10px;
+    padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));background:var(--card);border-top:1px solid var(--line)}
+  .play-bar .btn{flex:1;height:50px;font-size:16px}
+  .play-bar #pPrev{flex:0 0 100px}
+  .play-bar .btn:disabled{opacity:.35}
+  .btn-lg{height:54px;font-size:16.5px}
+  .gridchips{display:grid;grid-template-columns:repeat(9,1fr);gap:5px}
+  .gridchips .sb{height:38px;font-size:14px;flex:none}
+  .setup-sum{background:linear-gradient(160deg,#2c2c2e,#000);color:#f5f5f7;border-radius:var(--radius);padding:16px 18px;margin-bottom:14px}
+  .ss-k{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:#8e8e93;font-weight:600}
+  .ss-v{font-size:20px;font-weight:600;letter-spacing:-.02em;margin-top:3px}
+  .ss-d{font-size:13px;color:#a1a1a6;margin-top:3px}
+  .sumtbl td,.sumtbl th{padding:8px 10px}
+  .sumtbl tr[data-row]{cursor:pointer}
+  .sumtbl tr.subt td{font-weight:700;background:var(--bg)}
+  .sumtbl span.u{display:inline-block;min-width:24px;text-align:center;border:1.5px solid var(--ink);border-radius:50%}
+  .sumtbl span.o{display:inline-block;min-width:24px;text-align:center;border:1.5px solid var(--muted);border-radius:4px}
   .switch{position:relative;width:46px;height:27px;flex:0 0 auto}
   .switch input{opacity:0;width:0;height:0}
   .slider{position:absolute;inset:0;background:var(--line);border-radius:999px;transition:.15s}
@@ -401,7 +450,8 @@
   <section class="screen" id="s-rounds">
     <!-- history + stats view -->
     <div id="roundsHome">
-      <button class="btn btn-pri btn-block" id="startRound" style="margin-bottom:16px">New round</button>
+      <div id="resumeCard"></div>
+      <button class="btn btn-pri btn-block btn-lg" id="startRound" style="margin-bottom:16px">New round</button>
 
       <div class="sec-title">Your numbers</div>
       <div class="card">
@@ -422,67 +472,39 @@
       </div>
     </div>
 
-    <!-- scorecard entry -->
-    <div id="scorecard" style="display:none">
-      <div class="sc-sticky">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
-          <button class="btn btn-sm btn-ghost" id="scBack">← Back</button>
-          <div style="font-weight:700;font-size:15px" id="scTitle">New round</div>
-        </div>
-        <div class="sc-tot">
-          <div class="c"><div class="k">Out</div><div class="v" id="tOut">–</div></div>
-          <div class="c"><div class="k">In</div><div class="v" id="tIn">–</div></div>
-          <div class="c"><div class="k">Total</div><div class="v" id="tTot">–</div></div>
-          <div class="c"><div class="k">To par</div><div class="v topar even" id="tPar">E</div></div>
-        </div>
-        <div class="feelstrip" id="scFeelStrip"></div>
+    <!-- round setup -->
+    <div id="rSetup" style="display:none">
+      <div class="play-top">
+        <button class="iconbtn" id="suCancel">Cancel</button>
+        <div class="pt-mid"><div class="pt-course">New round</div><div class="pt-sub">Set up</div></div>
+        <span style="width:68px"></span>
       </div>
+      <div id="rSetupBody"></div>
+    </div>
 
-      <div class="card">
-        <div class="two">
-          <div class="field"><label for="scDate">Date</label><input type="date" id="scDate"></div>
-          <div class="field"><label for="scHoles">Holes</label>
-            <select id="scHoles"><option value="18">18 holes</option><option value="front">Front 9</option><option value="back">Back 9</option><option value="custom">Custom…</option></select>
-          </div>
-        </div>
-        <div class="two" id="scCustomWrap" style="display:none">
-          <div class="field"><label for="scStart">Start at hole</label><select id="scStart"></select></div>
-          <div class="field"><label for="scCount">Number of holes</label><select id="scCount"></select></div>
-        </div>
-        <div class="field" style="margin-bottom:0"><label for="scCourse">Course</label>
-          <select id="scCourse"></select>
-        </div>
-        <div class="field" id="scOtherWrap" style="display:none;margin-top:12px;margin-bottom:0">
-          <label for="scOther">Course name</label><input type="text" id="scOther" placeholder="Type course name">
-        </div>
+    <!-- hole by hole -->
+    <div id="rPlay" style="display:none">
+      <div class="play-top">
+        <button class="iconbtn" id="pExit">Exit</button>
+        <div class="pt-mid"><div class="pt-course" id="pCourse"></div><div class="pt-sub" id="pSub"></div></div>
+        <button class="iconbtn" id="pCard">Card</button>
       </div>
+      <div class="feelstrip" id="pFeels"></div>
+      <div id="pBody"></div>
+      <div class="play-bar">
+        <button class="btn" id="pPrev">Back</button>
+        <button class="btn btn-pri" id="pNext">Next hole</button>
+      </div>
+    </div>
 
-      <div class="card" id="scFeelsCard">
-        <h2>Swing thoughts for this round</h2>
-        <div class="hint" style="margin:0 0 10px">Pick up to three. They stay pinned at the top while you score. Edit the list on the Today tab.</div>
-        <div class="chipwrap" id="scFeelPick"></div>
+    <!-- finish -->
+    <div id="rFinish" style="display:none">
+      <div class="play-top">
+        <span style="width:68px"></span>
+        <div class="pt-mid"><div class="pt-course">Round complete</div><div class="pt-sub">Debrief and save</div></div>
+        <span style="width:68px"></span>
       </div>
-
-      <div class="toggle-row card" style="margin-bottom:14px">
-        <div>
-          <div style="font-weight:700;font-size:14.5px">Track putts &amp; stats</div>
-          <div style="font-size:12.5px;color:var(--ink-soft)">Putts, fairways &amp; greens per hole</div>
-        </div>
-        <label class="switch"><input type="checkbox" id="scStats" checked><span class="slider"></span></label>
-      </div>
-
-      <div id="holeList"></div>
-
-      <div class="card">
-        <h2>Debrief</h2>
-        <div class="hint" style="margin:0 0 8px">Where did the shots go today? Tap all that apply.</div>
-        <div class="leakwrap" id="scLeaks"></div>
-      </div>
-      <div class="field" style="margin-top:4px"><label for="scNotes">Round notes</label>
-        <textarea id="scNotes" placeholder="How it felt, what worked, what to work on…"></textarea>
-      </div>
-      <button class="btn btn-pri btn-block" id="scSave" style="margin-top:6px">Save round</button>
-      <div class="hint" style="text-align:center" id="scMsg"></div>
+      <div id="rFinishBody"></div>
     </div>
   </section>
 
@@ -768,9 +790,10 @@ function diffFor(round){
   var played=round.holes||18;
   if(played!==18) return null;                 /* only 18-hole rounds feed the index */
   if(!round.gross) return null;
-  if(c && c.cr && c.slope){ return (113/c.slope)*(round.gross - c.cr); }
-  var par = (c?c.par:72);
-  return round.gross - par;                     /* fallback proxy */
+  var tb=round.teeBox||{}, cr=tb.cr||(c&&c.cr), slope=tb.slope||(c&&c.slope);
+  var mult=(c&&c.holes===9)?2:1;               /* 18 on a 9-hole course */
+  if(cr && slope){ return (113/slope)*(round.gross - cr*mult); }
+  return round.gross - (c?c.par*mult:72);
 }
 var WHS=[null,null,null,[1,-2],[1,-1],[1,0],[2,-1],[2,0],[2,0],[3,0],[3,0],[3,0],[4,0],[4,0],[4,0],[5,0],[5,0],[6,0],[6,0],[7,0],[8,0]];
 function currentIndex(){
@@ -801,8 +824,16 @@ function computeRound(r){
   (r.putts||[]).forEach(function(p){if(p!=null)putts+=p;});
   (r.fir||[]).forEach(function(f,i){ if((pars[i]||4)>=4){ if(f!=null)firElig++; if(f===true)fir++; }});
   (r.gir||[]).forEach(function(g){ if(g!=null){girCount++; if(g===true)gir++;}});
+  var scrCh=0,scr=0,three=0,puttHoles=0,pen=0,holes=0;
+  scores.forEach(function(s,i){
+    if(s==null)return; holes++;
+    var par=pars[i]||4;
+    if(r.gir&&r.gir[i]===false){scrCh++; if(s<=par)scr++;}
+    if(r.putts&&r.putts[i]!=null){puttHoles++; if(r.putts[i]>=3)three++;}
+    if(r.pen&&r.pen[i])pen+=r.pen[i];
+  });
   return {gross:gross,toPar:gross-parSum,parSum:parSum,putts:putts,hasPutts:(r.putts||[]).some(function(x){return x!=null;}),
-          fir:fir,firElig:firElig,gir:gir,girCount:girCount};
+          fir:fir,firElig:firElig,gir:gir,girCount:girCount,scrCh:scrCh,scr:scr,three:three,puttHoles:puttHoles,pen:pen,holes:holes};
 }
 function toParStr(n){return n===0?"E":(n>0?"+"+n:""+n);}
 function toParClass(n){return n<0?"good":(n>0?"bad":"even");}
@@ -821,7 +852,7 @@ document.getElementById("nav").addEventListener("click",function(e){
 document.querySelectorAll(".qa").forEach(function(q){
   q.addEventListener("click",function(){
     go(q.dataset.go);
-    if(q.dataset.go==="rounds" && q.dataset.act==="new") openScorecard();
+    if(q.dataset.go==="rounds" && q.dataset.act==="new"){ if(D.draft)openPlay(); else openSetup(); }
   });
 });
 
@@ -884,6 +915,9 @@ function renderToday(){
   document.getElementById("hcpSpark").innerHTML=diffs.length>=2?sparkline(diffs):"";
 
   renderFeels(); renderFocus(); renderPatterns();
+  var qt=document.querySelector('.qa[data-act="new"] .t'), qd=document.querySelector('.qa[data-act="new"] .d');
+  if(D.draft){var dt=draftTotals(); qt.textContent="Resume round"; qd.textContent=D.draft.courseName+" · hole "+D.draft.holeNums[D.draft.idx];}
+  else{qt.textContent="New round"; qd.textContent="Hole by hole";}
   var day=new Date().getDay();
   document.getElementById("qaPractice").textContent = day===3?"Long game tonight":(day===0||day===6)?"Short game & putting":"Next: Wednesday long game";
   /* course handicap card */
@@ -948,83 +982,310 @@ function fillCourseSelect(sel,withOther){
   if(cur)sel.value=cur;
 }
 
-/* ---------------- SCORECARD ---------------- */
-var SC={editId:null,pars:[],nums:[],state:[]};
-function showRoundsHome(){
-  document.getElementById("scorecard").style.display="none";
-  document.getElementById("roundsHome").style.display="block";
-  renderStats(); renderRoundList();
-}
-document.getElementById("startRound").addEventListener("click",function(){openScorecard();});
-document.getElementById("scBack").addEventListener("click",showRoundsHome);
-
-(function fillCustom(){
-  var s=document.getElementById("scStart"),c=document.getElementById("scCount"),h="",k="";
-  for(var i=1;i<=18;i++){h+='<option value="'+i+'">Hole '+i+'</option>';k+='<option value="'+i+'">'+i+' hole'+(i>1?"s":"")+'</option>';}
-  s.innerHTML=h;c.innerHTML=k;s.value=1;c.value=9;
-})();
-
-function openScorecard(round){
-  document.getElementById("roundsHome").style.display="none";
-  document.getElementById("scorecard").style.display="block";
-  window.scrollTo(0,0);
-  var sel=document.getElementById("scCourse"); fillCourseSelect(sel,true);
-  SC.editId = round?round.id:null;
-  document.getElementById("scTitle").textContent = round?"Edit round":"New round";
-  if(round){
-    document.getElementById("scDate").value=round.date;
-    if(round.courseId==="__other"){sel.value="__other";document.getElementById("scOther").value=round.courseName||"";}
-    else sel.value=round.courseId;
-    document.getElementById("scHoles").value=round.mode||"18";
-    document.getElementById("scStart").value=round.start||1;
-    document.getElementById("scCount").value=round.count||18;
-    document.getElementById("scNotes").value=round.notes||"";
-    document.getElementById("scStats").checked=true;
-    SC.pars=round.pars?round.pars.slice():null;
-    SC._load=round;
-  } else {
-    document.getElementById("scDate").value=isoToday();
-    document.getElementById("scHoles").value="18";
-    document.getElementById("scStart").value=1; document.getElementById("scCount").value=9;
-    document.getElementById("scNotes").value="";
-    document.getElementById("scStats").checked=true;
-    SC.pars=null; SC._load=null;
-  }
-  SC.feels = round ? (round.feels||[]) : defaultRoundFeels();
-  SC.leaks = round ? (round.leaks||[]) : [];
-  renderScFeels(); renderLeaks();
-  syncOther(); syncHoleOpts(); buildHoles();
+/* ---------------- ROUND FLOW ---------------- */
+var RF={setup:null};
+function g(a,i){return a&&a[i]!=null?a[i]:null;}
+function teesFor(c){
+  if(!c)return [];
+  var o=D.courses[c.id]||{};
+  if(o.tees&&o.tees.length)return o.tees;
+  return [{name:"Blue",cr:c.cr,slope:c.slope},{name:"White",cr:c.cr,slope:c.slope},{name:"Red",cr:c.cr,slope:c.slope}];
 }
 function defaultRoundFeels(){
   var last=D.rounds.slice().sort(function(a,b){return a.date<b.date?1:-1;})[0];
-  if(last&&last.feels&&last.feels.length)return last.feels.slice();
-  return D.feels.slice(0,3).map(function(f){return f.title;});
+  var list=(last&&last.feels&&last.feels.length)?last.feels.slice():D.feels.slice(0,3).map(function(f){return f.title;});
+  return list.filter(function(t){return D.feels.some(function(f){return f.title===t;});});
 }
-function renderScFeels(){
-  var pick=document.getElementById("scFeelPick");
-  SC.feels=SC.feels.filter(function(t){return D.feels.some(function(f){return f.title===t;});});
-  var full=SC.feels.length>=3;
-  pick.innerHTML=D.feels.map(function(f){
-    var on=SC.feels.indexOf(f.title)>=0;
-    return '<button class="fchip'+(on?" on":(full?" dim":""))+'" data-ft="'+esc(f.title)+'">'+esc(f.title)+'</button>';
-  }).join("")||'<div class="empty">Add swing thoughts on the Today tab first.</div>';
-  pick.querySelectorAll("[data-ft]").forEach(function(b){
-    b.onclick=function(){
-      var t=b.dataset.ft,i=SC.feels.indexOf(t);
-      if(i>=0)SC.feels.splice(i,1); else if(SC.feels.length<3)SC.feels.push(t);
-      renderScFeels();
-    };
-  });
-  var strip=document.getElementById("scFeelStrip");
-  strip.classList.toggle("on",SC.feels.length>0);
-  strip.innerHTML=SC.feels.map(function(t,i){return '<b>'+(i+1)+'</b>'+esc(t);}).join('<span style="color:var(--muted)">  ·  </span>');
+function setupHoleNums(s){
+  var c=courseById(s.courseId), total=(c&&c.holes===9)?9:18, start=1, count=18;
+  if(s.mode==="front"){start=1;count=9;}
+  else if(s.mode==="back"){start=10;count=9;}
+  else if(s.mode==="custom"){start=s.start;count=s.count;}
+  if(start>total)start=1;
+  var nums=[];for(var i=0;i<count;i++)nums.push(((start-1+i)%total)+1);
+  return nums;
 }
+function modeLabel(m,nums){
+  if(m==="18")return nums.length+" holes";
+  if(m==="front")return "Front 9";
+  if(m==="back")return "Back 9";
+  return nums.length+" hole"+(nums.length===1?"":"s")+" from "+nums[0];
+}
+function showRView(id){
+  ["roundsHome","rSetup","rPlay","rFinish"].forEach(function(v){document.getElementById(v).style.display=(v===id?"block":"none");});
+  document.body.classList.toggle("playing",id!=="roundsHome");
+  window.scrollTo(0,0);
+}
+function showRoundsHome(){
+  showRView("roundsHome");
+  if(wakeLock){try{wakeLock.release();}catch(e){} wakeLock=null;}
+  renderResume(); renderStats(); renderRoundList();
+}
+function renderResume(){
+  var el=document.getElementById("resumeCard"), d=D.draft;
+  if(!d){el.innerHTML="";return;}
+  var t=draftTotals();
+  el.innerHTML='<div class="card"><h2>Round in progress</h2>'+
+    '<div style="font-weight:700;font-size:16px">'+esc(d.courseName)+'</div>'+
+    '<div style="font-size:13px;color:var(--ink-soft);margin:2px 0 12px">'+(t.thru?('Thru '+t.thru+' · '+t.gross+' ('+toParStr(t.toPar)+')'):'Not started')+' · Hole '+d.holeNums[d.idx]+'</div>'+
+    '<div class="btn-row"><button class="btn btn-pri" id="rsResume">Resume</button><button class="btn btn-ghost" id="rsDiscard">Discard</button></div></div>';
+  document.getElementById("rsResume").onclick=openPlay;
+  document.getElementById("rsDiscard").onclick=function(){openConfirm(d.editId?"Discard your changes to this round?":"Discard this round?",function(){D.draft=null;save();showRoundsHome();renderToday();});};
+}
+document.getElementById("startRound").addEventListener("click",newRoundEntry);
+function newRoundEntry(){
+  if(D.draft){openConfirm("You have a round in progress. Discard it and start a new one?",function(){D.draft=null;save();openSetup();});}
+  else openSetup();
+}
+
+/* ---- setup ---- */
+function openSetup(){
+  var last=D.rounds.slice().sort(function(a,b){return a.date<b.date?1:-1;})[0];
+  var cid=(last&&last.courseId!=="__other"&&courseById(last.courseId))?last.courseId:allCourses()[0].id;
+  RF.setup={date:isoToday(),courseId:cid,courseName:"",tee:(last&&last.courseId===cid&&last.teeBox)?last.teeBox.name:null,
+    mode:"18",start:1,count:9,feels:defaultRoundFeels()};
+  showRView("rSetup"); renderSetup();
+}
+document.getElementById("suCancel").addEventListener("click",showRoundsHome);
+function renderSetup(){
+  var s=RF.setup, c=courseById(s.courseId), el=document.getElementById("rSetupBody");
+  var tees=teesFor(c);
+  if(c&&!tees.some(function(t){return t.name===s.tee;}))s.tee=tees.length?tees[0].name:null;
+  var total=(c&&c.holes===9)?9:18;
+  if(total===9&&s.mode==="back")s.mode="front";
+  if(s.start>total)s.start=1;
+  var modes=[["18",total===9?"9 holes":"18 holes"],["front","Front 9"],["back","Back 9"],["custom","Custom"]].filter(function(m){return !(total===9&&(m[0]==="back"||m[0]==="front"));});
+  if(total===9&&s.mode==="18"){} 
+  var copts=allCourses().map(function(x){return '<option value="'+x.id+'"'+(x.id===s.courseId?' selected':'')+'>'+esc(x.name)+(x.holes===9?' (9 holes)':'')+'</option>';}).join("")+
+    '<option value="__other"'+(s.courseId==="__other"?' selected':'')+'>Other course…</option>';
+  var h='';
+  h+='<div class="card"><h2>Course</h2><div class="field"><select id="suCourse">'+copts+'</select></div>'+
+     (s.courseId==="__other"?'<div class="field"><input type="text" id="suOther" placeholder="Course name" value="'+esc(s.courseName)+'"></div>':'')+
+     '<div class="field" style="margin-bottom:0"><label for="suDate">Date</label><input type="date" id="suDate" value="'+s.date+'"></div></div>';
+  if(tees.length){
+    h+='<div class="card"><h2>Tees</h2><div class="chipwrap">'+tees.map(function(t){
+      return '<button class="fchip'+(t.name===s.tee?' on':'')+'" data-tbox="'+esc(t.name)+'">'+esc(t.name)+'</button>';}).join("")+'</div>'+
+      '<div class="hint">Set each tee\'s rating and slope under More → Courses → Tees.</div></div>';
+  }
+  h+='<div class="card"><h2>Holes</h2><div class="chipwrap">'+modes.map(function(m){
+      return '<button class="fchip'+(s.mode===m[0]?' on':'')+'" data-mode="'+m[0]+'">'+m[1]+'</button>';}).join("")+'</div>';
+  if(s.mode==="custom"){
+    var g1="",g2="";
+    for(var i=1;i<=total;i++)g1+='<button class="sb'+(s.start===i?' on':'')+'" data-start="'+i+'">'+i+'</button>';
+    for(var j=1;j<=18;j++)g2+='<button class="sb'+(s.count===j?' on':'')+'" data-count="'+j+'">'+j+'</button>';
+    h+='<div class="lab" style="margin-top:14px">Start on hole</div><div class="gridchips">'+g1+'</div>'+
+       '<div class="lab" style="margin-top:12px">Number of holes</div><div class="gridchips">'+g2+'</div>';
+  }
+  h+='</div>';
+  var full=s.feels.length>=3;
+  h+='<div class="card"><h2>Swing thoughts · pick up to 3</h2><div class="chipwrap">'+
+     (D.feels.length?D.feels.map(function(f){var on=s.feels.indexOf(f.title)>=0;
+       return '<button class="fchip'+(on?' on':(full?' dim':''))+'" data-feel="'+esc(f.title)+'">'+esc(f.title)+'</button>';}).join(""):
+       '<div class="hint" style="margin:0">Add swing thoughts on the Today tab.</div>')+
+     '</div></div>';
+  var nums=setupHoleNums(s), parSum=0, pars=c?c.pars:defaultPars(72,18);
+  nums.forEach(function(n){parSum+=pars[n-1]||4;});
+  var name=s.courseId==="__other"?(s.courseName||"Other course"):c.name;
+  h+='<div class="setup-sum"><div class="ss-k">Today</div><div class="ss-v">'+esc(name)+'</div>'+
+     '<div class="ss-d">'+(s.tee?esc(s.tee)+' tees · ':'')+modeLabel(s.mode,nums)+(nums.length>1?' ('+nums[0]+'–'+nums[nums.length-1]+')':'')+' · Par '+parSum+'</div></div>';
+  h+='<button class="btn btn-pri btn-block btn-lg" id="suStart">Start round</button><div class="hint" id="suMsg" style="text-align:center"></div>';
+  el.innerHTML=h;
+
+  document.getElementById("suCourse").onchange=function(){s.courseId=this.value;s.tee=null;renderSetup();};
+  var oth=document.getElementById("suOther"); if(oth)oth.oninput=function(){s.courseName=this.value;};
+  document.getElementById("suDate").onchange=function(){s.date=this.value||isoToday();};
+  el.querySelectorAll("[data-tbox]").forEach(function(b){b.onclick=function(){s.tee=b.dataset.tbox;renderSetup();};});
+  el.querySelectorAll("[data-mode]").forEach(function(b){b.onclick=function(){s.mode=b.dataset.mode;renderSetup();};});
+  el.querySelectorAll("[data-start]").forEach(function(b){b.onclick=function(){s.start=+b.dataset.start;renderSetup();};});
+  el.querySelectorAll("[data-count]").forEach(function(b){b.onclick=function(){s.count=+b.dataset.count;renderSetup();};});
+  el.querySelectorAll("[data-feel]").forEach(function(b){b.onclick=function(){
+    var t=b.dataset.feel,k=s.feels.indexOf(t); if(k>=0)s.feels.splice(k,1); else if(s.feels.length<3)s.feels.push(t); renderSetup();};});
+  document.getElementById("suStart").onclick=startRound;
+}
+function blankHole(){return {score:null,putts:null,fir:null,gir:null,tee:null,firMiss:null,girMiss:null,pen:null};}
+function startRound(){
+  var s=RF.setup, c=courseById(s.courseId);
+  if(s.courseId==="__other"&&!s.courseName.trim()){document.getElementById("suMsg").textContent="Give the course a name first.";return;}
+  var nums=setupHoleNums(s), pars=c?c.pars:defaultPars(72,18), tb=null;
+  teesFor(c).forEach(function(t){if(t.name===s.tee)tb={name:t.name,cr:t.cr,slope:t.slope};});
+  D.draft={editId:null,date:s.date,courseId:s.courseId,courseName:s.courseId==="__other"?s.courseName.trim():c.name,
+    teeBox:tb,mode:s.mode,start:nums[0],count:nums.length,holeNums:nums,pars:nums.map(function(n){return pars[n-1]||4;}),
+    state:nums.map(blankHole),idx:0,feels:s.feels.slice(),leaks:[],notes:""};
+  save(); openPlay();
+}
+function editRound(r){
+  function go2(){
+    var nums=r.holeNums||(r.scores||[]).map(function(_,i){return i+1;});
+    D.draft={editId:r.id,date:r.date,courseId:r.courseId,courseName:r.courseName||(courseById(r.courseId)||{}).name||"",
+      teeBox:r.teeBox||null,mode:r.mode||"18",start:nums[0],count:nums.length,holeNums:nums.slice(),
+      pars:(r.pars||nums.map(function(){return 4;})).slice(),
+      state:nums.map(function(n,i){return {score:g(r.scores,i),putts:g(r.putts,i),fir:g(r.fir,i),gir:g(r.gir,i),tee:g(r.tee,i),firMiss:g(r.firMiss,i),girMiss:g(r.girMiss,i),pen:g(r.pen,i)};}),
+      idx:0,feels:(r.feels||[]).slice(),leaks:(r.leaks||[]).slice(),notes:r.notes||""};
+    save(); openPlay();
+  }
+  if(D.draft)openConfirm("Discard the round in progress and edit this one?",go2); else go2();
+}
+
+/* ---- play ---- */
+function draftTotals(){
+  var d=D.draft,gr=0,p=0,thru=0;
+  d.state.forEach(function(h,i){if(h.score!=null){gr+=h.score;p+=d.pars[i];thru++;}});
+  return {gross:gr,toPar:gr-p,thru:thru};
+}
+var wakeLock=null;
+function keepAwake(){try{if(navigator.wakeLock&&!wakeLock)navigator.wakeLock.request("screen").then(function(l){wakeLock=l;l.addEventListener("release",function(){wakeLock=null;});}).catch(function(){});}catch(e){}}
+document.addEventListener("visibilitychange",function(){if(document.visibilityState==="visible"&&document.body.classList.contains("playing"))keepAwake();});
+function openPlay(){go("rounds");showRView("rPlay");renderHole();keepAwake();}
+function renderHole(){
+  var d=D.draft,i=d.idx,n=d.holeNums[i],par=d.pars[i],st=d.state[i],t=draftTotals(),last=i===d.holeNums.length-1;
+  var c=courseById(d.courseId), lap=(c&&c.holes===9&&i>=9)?' · 2nd nine':'';
+  document.getElementById("pCourse").textContent=d.courseName;
+  document.getElementById("pSub").textContent=(d.teeBox?d.teeBox.name+' tees · ':'')+modeLabel(d.mode,d.holeNums);
+  var fs=document.getElementById("pFeels");
+  fs.classList.toggle("on",d.feels.length>0);
+  fs.innerHTML=d.feels.map(function(f,k){return '<b>'+(k+1)+'</b>'+esc(f);}).join('<span style="color:var(--muted)">  ·  </span>');
+
+  var pc="";[3,4,5].forEach(function(p){pc+='<button class="'+(p===par?'on':'')+'" data-setpar="'+p+'">'+p+'</button>';});
+  var h='<div class="hole-hero"><div><div class="hh-lab">Hole</div><div class="hh-num">'+n+'</div></div>'+
+    '<div class="hh-mid"><div class="hh-lab">Par</div><div class="parchips">'+pc+'</div><div class="hh-of">'+(i+1)+' of '+d.holeNums.length+lap+'</div></div>'+
+    '<div class="hh-tot"><div class="hh-lab">'+(t.thru?'Thru '+t.thru:'Total')+'</div><div class="v">'+(t.thru?t.gross:'–')+'</div><div class="tp">'+(t.thru?toParStr(t.toPar):'')+'</div></div></div>';
+  var dots="";d.holeNums.forEach(function(x,k){var s=d.state[k].score;
+    dots+='<button class="dot'+(k===i?' cur':(s!=null?' done':''))+'" data-jump="'+k+'">'+x+'</button>';});
+  h+='<div class="dots" id="pDots">'+dots+'</div>';
+
+  var lo=Math.max(1,par-2),sb="";
+  for(var s=lo;s<=par+4;s++)sb+='<button class="sb'+(st.score===s?' on'+(s<par?' under':(s>par?' over':'')):'')+'" data-s="'+s+'">'+s+'<small>'+scoreLabel(s,par)+'</small></button>';
+  h+='<div class="card hole-card"><div class="lab" style="margin-top:0">Score</div><div class="srow big">'+sb+'</div>';
+  if(par>=4){
+    h+='<div class="lab">Tee shot</div><div class="srow" data-tees>'+TEES.map(function(tt){
+      return '<button class="sb'+(st.tee===tt[0]?' on':'')+'" data-tee="'+tt[0]+'">'+tt[2]+'</button>';}).join("")+'</div>';
+    h+='<div class="lab">Fairway</div><div class="statline">'+yn("fir",st.fir)+
+      '<div class="miss'+(st.fir===false?' on':'')+'">'+mb("fm","L","Left",st.firMiss)+mb("fm","R","Right",st.firMiss)+'</div></div>';
+  }
+  h+='<div class="lab">Green</div><div class="statline">'+yn("gir",st.gir)+
+    '<div class="miss'+(st.gir===false?' on':'')+'">'+mb("gm","L","Left",st.girMiss)+mb("gm","R","Right",st.girMiss)+mb("gm","S","Short",st.girMiss)+mb("gm","G","Long",st.girMiss)+'</div></div>';
+  var pb="";for(var p=0;p<=5;p++)pb+='<button class="sb'+(st.putts===p?' on':'')+'" data-p="'+p+'">'+p+'</button>';
+  h+='<div class="lab">Putts</div><div class="srow">'+pb+'</div>';
+  var pn="";[[0,"None"],[1,"1"],[2,"2"],[3,"3+"]].forEach(function(x){pn+='<button class="sb'+(st.pen===x[0]?' on':'')+'" data-pen="'+x[0]+'">'+x[1]+'</button>';});
+  h+='<div class="lab">Penalty strokes · OB, water, unplayable</div><div class="srow">'+pn+'</div></div>';
+  var body=document.getElementById("pBody"); body.innerHTML=h;
+
+  document.getElementById("pPrev").disabled=(i===0);
+  var nx=document.getElementById("pNext"); nx.textContent=last?"Finish round":"Next hole";
+
+  function set(k,v){st[k]=(st[k]===v?null:v); if(k==="fir"&&st.fir!==false)st.firMiss=null; if(k==="gir"&&st.gir!==false)st.girMiss=null; save(); renderHole();}
+  body.querySelectorAll("[data-s]").forEach(function(b){b.onclick=function(){set("score",+b.dataset.s);};});
+  body.querySelectorAll("[data-p]").forEach(function(b){b.onclick=function(){set("putts",+b.dataset.p);};});
+  body.querySelectorAll("[data-pen]").forEach(function(b){b.onclick=function(){set("pen",+b.dataset.pen);};});
+  body.querySelectorAll("[data-tee]").forEach(function(b){b.onclick=function(){set("tee",b.dataset.tee);};});
+  body.querySelectorAll("[data-yn]").forEach(function(b){b.onclick=function(){set(b.dataset.yn,b.dataset.v==="1");};});
+  body.querySelectorAll("[data-fm]").forEach(function(b){b.onclick=function(){set("firMiss",b.dataset.fm);};});
+  body.querySelectorAll("[data-gm]").forEach(function(b){b.onclick=function(){set("girMiss",b.dataset.gm);};});
+  body.querySelectorAll("[data-setpar]").forEach(function(b){b.onclick=function(){d.pars[i]=+b.dataset.setpar;save();renderHole();};});
+  body.querySelectorAll("[data-jump]").forEach(function(b){b.onclick=function(){d.idx=+b.dataset.jump;save();renderHole();window.scrollTo(0,0);};});
+  var cur=body.querySelector(".dot.cur"); if(cur&&cur.scrollIntoView)cur.scrollIntoView({block:"nearest",inline:"center"});
+}
+function yn(k,v){return '<div class="yn"><button class="sb'+(v===true?' on':'')+'" data-yn="'+k+'" data-v="1">✓</button><button class="sb'+(v===false?' on':'')+'" data-yn="'+k+'" data-v="0">✗</button></div>';}
+function mb(attr,code,label,cur){return '<button class="sb'+(cur===code?' on':'')+'" data-'+attr+'="'+code+'">'+label+'</button>';}
+function scoreLabel(s,par){
+  var d=s-par;
+  if(d<=-3)return"alb";if(d===-2)return"eagle";if(d===-1)return"birdie";if(d===0)return"par";
+  if(d===1)return"bogey";if(d===2)return"dbl";if(d===3)return"trpl";return"+"+d;
+}
+function stepHole(dir){
+  var d=D.draft, ni=d.idx+dir;
+  if(ni<0)return;
+  if(ni>=d.holeNums.length){openFinish();return;}
+  d.idx=ni; save(); renderHole(); window.scrollTo(0,0);
+}
+document.getElementById("pPrev").addEventListener("click",function(){stepHole(-1);});
+document.getElementById("pNext").addEventListener("click",function(){stepHole(1);});
+(function(){
+  var sx=0,sy=0,el=document.getElementById("pBody");
+  el.addEventListener("touchstart",function(e){sx=e.touches[0].clientX;sy=e.touches[0].clientY;},{passive:true});
+  el.addEventListener("touchend",function(e){var dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;
+    if(Math.abs(dx)>70&&Math.abs(dy)<45){ if(dx<0){ if(D.draft.idx<D.draft.holeNums.length-1)stepHole(1);} else stepHole(-1);} },{passive:true});
+})();
+document.getElementById("pExit").addEventListener("click",function(){
+  var d=D.draft;
+  openModal('<h3>Leave this round?</h3><div class="hint" style="margin-top:0">Every score is already saved. Resume any time from Rounds.</div>'+
+    '<button class="btn btn-pri btn-block" id="exKeep" style="margin-top:14px">Save and exit</button>'+
+    '<button class="btn btn-block btn-danger" id="exDiscard" style="margin-top:8px">'+(d.editId?'Discard changes':'Discard round')+'</button>'+
+    '<button class="btn btn-block btn-ghost" id="exCancel" style="margin-top:8px">Keep playing</button>');
+  document.getElementById("exKeep").onclick=function(){closeModal();showRoundsHome();renderToday();};
+  document.getElementById("exCancel").onclick=closeModal;
+  document.getElementById("exDiscard").onclick=function(){closeModal();openConfirm(d.editId?"Discard your changes?":"Discard this round? Scores will be lost.",function(){D.draft=null;save();showRoundsHome();renderToday();});};
+});
+document.getElementById("pCard").addEventListener("click",function(){
+  openModal('<h3>Scorecard</h3>'+cardTable(true)+'<button class="btn btn-block" id="cardClose" style="margin-top:14px">Close</button>');
+  document.getElementById("cardClose").onclick=closeModal;
+  document.querySelectorAll("#modal [data-row]").forEach(function(r){r.onclick=function(){D.draft.idx=+r.dataset.row;save();closeModal();renderHole();window.scrollTo(0,0);};});
+});
+function cardTable(tappable){
+  var d=D.draft, rows="", chunk=0;
+  function sub(from,to,label){
+    var p=0,s=0,pu=0,any=false,anyP=false;
+    for(var k=from;k<to;k++){p+=d.pars[k];var h=d.state[k];if(h.score!=null){s+=h.score;any=true;}if(h.putts!=null){pu+=h.putts;anyP=true;}}
+    return '<tr class="subt"><td>'+label+'</td><td class="num">'+p+'</td><td class="num">'+(any?s:'–')+'</td><td class="num">'+(anyP?pu:'–')+'</td></tr>';
+  }
+  for(var k=0;k<d.holeNums.length;k++){
+    var h=d.state[k],par=d.pars[k],cls=h.score==null?'':(h.score<par?' class="u"':(h.score>par?' class="o"':''));
+    rows+='<tr'+(tappable?' data-row="'+k+'"':'')+'><td>'+d.holeNums[k]+'</td><td class="num">'+par+'</td><td class="num"><span'+cls+'>'+(h.score!=null?h.score:'–')+'</span></td><td class="num">'+(h.putts!=null?h.putts:'–')+'</td></tr>';
+    if((k+1)%9===0&&k+1<d.holeNums.length){rows+=sub(k-8,k+1,(chunk===0?'Out':'Nine'));chunk++;}
+  }
+  if(d.holeNums.length>9)rows+=sub(Math.floor((d.holeNums.length-1)/9)*9,d.holeNums.length,'In');
+  rows+=sub(0,d.holeNums.length,'Total');
+  return '<table class="tbl sumtbl"><thead><tr><th>Hole</th><th style="text-align:right">Par</th><th style="text-align:right">Score</th><th style="text-align:right">Putts</th></tr></thead><tbody>'+rows+'</tbody></table>';
+}
+
+/* ---- finish ---- */
+function openFinish(){showRView("rFinish");renderFinish();}
+function renderFinish(){
+  var d=D.draft,t=draftTotals(),pu=0,fh=0,fe=0,gh=0,ge=0,pn=0,uc=0,ud=0;
+  d.state.forEach(function(h,i){if(h.putts!=null)pu+=h.putts; if(d.pars[i]>=4&&h.fir!=null){fe++;if(h.fir)fh++;} if(h.gir!=null){ge++;if(h.gir)gh++;}
+    if(h.pen)pn+=h.pen; if(h.gir===false&&h.score!=null){uc++;if(h.score<=d.pars[i])ud++;}});
+  var h='<div class="hole-hero fin"><div><div class="hh-lab">'+esc(d.courseName)+'</div><div class="hh-num">'+(t.thru?t.gross:'–')+'</div>'+
+    '<div class="hh-of">'+(t.thru?toParStr(t.toPar)+' · ':'')+t.thru+' of '+d.holeNums.length+' holes scored</div></div></div>';
+  h+='<div class="card"><div class="stats">'+
+    '<div class="stat"><div class="v">'+(pu||'–')+'</div><div class="k">Putts</div></div>'+
+    '<div class="stat"><div class="v">'+(fe?fh+'/'+fe:'–')+'</div><div class="k">Fairways</div></div>'+
+    '<div class="stat"><div class="v">'+(ge?gh+'/'+ge:'–')+'</div><div class="k">Greens</div></div>'+
+    '<div class="stat"><div class="v">'+(uc?ud+'/'+uc:'–')+'</div><div class="k">Up &amp; down</div></div>'+
+    '<div class="stat"><div class="v">'+pn+'</div><div class="k">Penalties</div></div>'+
+    '<div class="stat"><div class="v">'+t.thru+'</div><div class="k">Holes</div></div></div></div>';
+  h+='<div class="card"><h2>Scorecard</h2>'+cardTable(false)+'</div>';
+  h+='<div class="card"><h2>Debrief</h2><div class="hint" style="margin:0 0 10px">Where did the shots go today? Tap all that apply.</div><div class="chipwrap">'+
+    LEAKS.map(function(l){return '<button class="fchip'+(d.leaks.indexOf(l)>=0?' on':'')+'" data-lk="'+l+'">'+l+'</button>';}).join("")+'</div></div>';
+  h+='<div class="card"><h2>Notes</h2><textarea id="fNotes" placeholder="How it felt, what worked, what to work on…">'+esc(d.notes)+'</textarea></div>';
+  h+='<button class="btn btn-pri btn-block btn-lg" id="fSave">Save round</button>'+
+     '<button class="btn btn-block btn-ghost" id="fBack" style="margin-top:10px">Back to holes</button><div class="hint" id="fMsg" style="text-align:center"></div>';
+  var el=document.getElementById("rFinishBody"); el.innerHTML=h;
+  el.querySelectorAll("[data-lk]").forEach(function(b){b.onclick=function(){var k=d.leaks.indexOf(b.dataset.lk);if(k>=0)d.leaks.splice(k,1);else d.leaks.push(b.dataset.lk);save();b.classList.toggle("on");};});
+  document.getElementById("fNotes").oninput=function(){d.notes=this.value;save();};
+  document.getElementById("fBack").onclick=function(){showRView("rPlay");renderHole();};
+  document.getElementById("fSave").onclick=saveDraftRound;
+}
+function saveDraftRound(){
+  var d=D.draft;
+  if(!d.state.some(function(h){return h.score!=null;})){document.getElementById("fMsg").textContent="Score at least one hole first.";return;}
+  function col(k){return d.state.map(function(h){return h[k];});}
+  var gross=0,parSum=0,played=0;
+  d.state.forEach(function(h,i){if(h.score!=null){gross+=h.score;parSum+=d.pars[i];played++;}});
+  var round={id:d.editId||("r"+Date.now()),date:d.date,mode:d.mode,start:d.start,count:d.holeNums.length,
+    holeNums:d.holeNums.slice(),holes:played,courseId:d.courseId,courseName:d.courseName,teeBox:d.teeBox,
+    scores:col("score"),putts:col("putts"),fir:col("fir"),gir:col("gir"),tee:col("tee"),firMiss:col("firMiss"),girMiss:col("girMiss"),pen:col("pen"),
+    pars:d.pars.slice(),gross:gross,toPar:gross-parSum,feels:d.feels.slice(),leaks:d.leaks.slice(),notes:(d.notes||"").trim()};
+  var c=courseById(d.courseId);
+  if(c&&d.courseId!=="__other"){
+    var full=c.pars.slice();
+    d.holeNums.forEach(function(n,i){if(n-1<full.length)full[n-1]=d.pars[i];});
+    D.courses[d.courseId]=D.courses[d.courseId]||{}; D.courses[d.courseId].pars=full;
+  }
+  if(d.editId)D.rounds=D.rounds.map(function(r){return r.id===d.editId?round:r;}); else D.rounds.push(round);
+  D.draft=null; save(); showRoundsHome(); renderToday();
+}
+
 var LEAKS=["Driver","Long game","Approach","Chipping","Bunkers","Putting","Course mgmt","Mental"];
-function renderLeaks(){
-  var el=document.getElementById("scLeaks");
-  el.innerHTML=LEAKS.map(function(l){return '<button class="fchip'+(SC.leaks.indexOf(l)>=0?" on":"")+'" data-lk="'+l+'">'+l+'</button>';}).join("");
-  el.querySelectorAll("[data-lk]").forEach(function(b){b.onclick=function(){var i=SC.leaks.indexOf(b.dataset.lk);if(i>=0)SC.leaks.splice(i,1);else SC.leaks.push(b.dataset.lk);renderLeaks();};});
-}
 var TEES=[["D","Driver","Driver"],["5W","5 wood","5W"],["2I","2 iron","2i"],["4I","4 iron","4i"],["IR","Iron","Iron"]];
 function teeName(c){for(var i=0;i<TEES.length;i++)if(TEES[i][0]===c)return TEES[i][1];return c;}
 function renderPatterns(){
@@ -1035,7 +1296,8 @@ function renderPatterns(){
     (r.scores||[]).forEach(function(s,i){
       var par=(r.pars||[])[i]||4;
       if(par>=4&&r.tee&&r.tee[i]&&r.fir&&r.fir[i]!=null){
-        var t=tee[r.tee[i]]=tee[r.tee[i]]||{n:0,hit:0,L:0,R:0};
+        var t=tee[r.tee[i]]=tee[r.tee[i]]||{n:0,hit:0,L:0,R:0,pen:0};
+        if(r.pen&&r.pen[i])t.pen+=r.pen[i];
         t.n++; if(r.fir[i])t.hit++; else if(r.firMiss&&r.firMiss[i])t[r.firMiss[i]]++;
       }
       if(r.gir&&r.gir[i]!=null){greens++; if(r.gir[i])girHit++; else if(r.girMiss&&r.girMiss[i]){gm[r.girMiss[i]]++;gmN++;}}
@@ -1071,6 +1333,8 @@ function renderPatterns(){
       dirs.push(['Approach play',msg]);
     }
   }
+  TEES.forEach(function(tt){var t=tee[tt[0]]; if(t&&t.pen>=3&&recent.length>=2)
+    dirs.push(['Penalties · '+tt[1], t.pen+' penalty strokes on holes you teed off with '+tt[1].toLowerCase()+' across '+recent.length+' rounds — about '+(Math.round(t.pen/recent.length*10)/10)+' a round. Where there\'s OB or water, a fairway-finder off the tee is the cheaper shot.']);});
   if(greens){rows+='<div class="pat-row"><span>Greens</span><span>'+Math.round(girHit/greens*100)+'% hit'+(gmN?' · misses '+gm.L+'L / '+gm.R+'R / '+gm.S+' short / '+gm.G+' long':'')+'</span></div>';}
   if(holesP>=18){
     var per=Math.round(three/holesP*18*10)/10;
@@ -1096,193 +1360,6 @@ function renderFocus(){
       '<span style="flex:0 0 24px;text-align:right;color:var(--muted);font-weight:700;font-size:12.5px">'+counts[l]+'</span></div>';}).join("")+
     '<div class="hint" style="margin-top:6px">Last '+recent.length+' round'+(recent.length===1?"":"s")+'.</div>';
 }
-function syncOther(){
-  var sel=document.getElementById("scCourse");
-  document.getElementById("scOtherWrap").style.display = sel.value==="__other"?"block":"none";
-}
-function syncHoleOpts(){
-  var c=courseById(document.getElementById("scCourse").value);
-  var sel=document.getElementById("scHoles");
-  var nine=c&&c.holes===9;
-  sel.querySelector('[value="18"]').disabled=nine;
-  sel.querySelector('[value="back"]').disabled=nine;
-  if(nine&&(sel.value==="18"||sel.value==="back"))sel.value="front";
-  document.getElementById("scCustomWrap").style.display= sel.value==="custom"?"grid":"none";
-}
-document.getElementById("scCourse").addEventListener("change",function(){syncOther();syncHoleOpts();SC.pars=null;buildHoles();});
-document.getElementById("scHoles").addEventListener("change",function(){syncHoleOpts();SC.pars=null;buildHoles();});
-document.getElementById("scStart").addEventListener("change",function(){SC.pars=null;buildHoles();});
-document.getElementById("scCount").addEventListener("change",function(){SC.pars=null;buildHoles();});
-document.getElementById("scStats").addEventListener("change",buildHoles);
-
-function holeNums(){
-  var mode=document.getElementById("scHoles").value;
-  var c=courseById(document.getElementById("scCourse").value);
-  var total=(c&&c.holes===9)?9:18;
-  var start=1,count=18;
-  if(mode==="front"){start=1;count=9;}
-  else if(mode==="back"){start=10;count=9;}
-  else if(mode==="custom"){start=+document.getElementById("scStart").value||1;count=+document.getElementById("scCount").value||9;}
-  var nums=[];for(var i=0;i<count;i++)nums.push(((start-1+i)%total)+1);
-  return nums;
-}
-function currentPars(nums){
-  if(SC.pars&&SC.pars.length===nums.length)return SC.pars;
-  var c=courseById(document.getElementById("scCourse").value);
-  var full=c?c.pars:defaultPars(72,18);
-  return nums.map(function(n){return full[n-1]||4;});
-}
-function scoreLabel(s,par){
-  var d=s-par;
-  if(d<=-3)return"alb";if(d===-2)return"eagle";if(d===-1)return"birdie";if(d===0)return"par";
-  if(d===1)return"bogey";if(d===2)return"dbl";if(d===3)return"trpl";return"+"+d;
-}
-function buildHoles(){
-  var nums=holeNums(); SC.nums=nums;
-  SC.pars=currentPars(nums).slice();
-  var withStats=document.getElementById("scStats").checked;
-  var L=SC._load;
-  SC.state=nums.map(function(n,i){
-    var li=L&&L.holeNums?L.holeNums.indexOf(n):-1;
-    if(L&&!L.holeNums)li=i;
-    return {score:(li>=0&&L.scores?L.scores[li]:null),putts:(li>=0&&L.putts?L.putts[li]:null),
-            fir:(li>=0&&L.fir?L.fir[li]:null),gir:(li>=0&&L.gir?L.gir[li]:null),
-            tee:(li>=0&&L.tee?L.tee[li]:null),firMiss:(li>=0&&L.firMiss?L.firMiss[li]:null),girMiss:(li>=0&&L.girMiss?L.girMiss[li]:null)};
-  });
-  var html="",lastSide=null;
-  nums.forEach(function(n,i){
-    var side=n<=9?"Front 9":"Back 9";
-    if(side!==lastSide){
-      var sideIdx=nums.map(function(x,j){return x<=9===(n<=9)?j:-1;}).filter(function(j){return j>=0;});
-      var sp=sideIdx.reduce(function(s,j){return s+SC.pars[j];},0);
-      html+='<div class="nine-head"><span>'+side+'</span><span>Par '+sp+'</span></div>'; lastSide=side;
-    }
-    var par=SC.pars[i];
-    var lo=Math.max(1,par-2),hi=par+4,sbtns="";
-    for(var s=lo;s<=hi;s++){
-      sbtns+='<button class="sb" data-s="'+s+'">'+s+'<small>'+scoreLabel(s,par)+'</small></button>';
-    }
-    html+='<div class="hole2" data-i="'+i+'">'+
-      '<div class="hh"><span class="hnum">'+n+'</span>'+
-        '<span class="hpar">Par <input class="par-ed" data-par="'+i+'" value="'+par+'" inputmode="numeric"></span>'+
-        '<span class="hres" data-res></span></div>'+
-      '<div class="lab">Score</div><div class="srow" data-scores>'+sbtns+'</div>';
-    if(withStats){
-      var pb="";for(var p=0;p<=5;p++)pb+='<button class="sb" data-p="'+p+'">'+p+'</button>';
-      var tb=TEES.map(function(t){return '<button class="sb" data-tee="'+t[0]+'">'+t[2]+'</button>';}).join("");
-      html+=(par>=4?
-          '<div class="lab">Tee shot</div><div class="srow" data-tees>'+tb+'</div>'+
-          '<div class="lab">Fairway</div><div class="statline"><div class="yn" data-fir><button class="sb" data-v="1">✓</button><button class="sb" data-v="0">✗</button></div>'+
-          '<div class="miss" data-firmiss><button class="sb" data-m="L">Left</button><button class="sb" data-m="R">Right</button></div></div>'
-        :'')+
-        '<div class="lab">Green</div><div class="statline"><div class="yn" data-gir><button class="sb" data-v="1">✓</button><button class="sb" data-v="0">✗</button></div>'+
-          '<div class="miss" data-girmiss><button class="sb" data-m="L">Left</button><button class="sb" data-m="R">Right</button><button class="sb" data-m="S">Short</button><button class="sb" data-m="G">Long</button></div></div>'+
-        '<div class="lab">Putts</div><div class="srow" data-putts>'+pb+'</div>';
-    }
-    html+='</div>';
-  });
-  var hl=document.getElementById("holeList"); hl.innerHTML=html;
-
-  hl.querySelectorAll(".hole2").forEach(function(row){
-    var i=+row.dataset.i;
-    row.querySelectorAll("[data-s]").forEach(function(b){
-      b.onclick=function(){var v=+b.dataset.s; SC.state[i].score=(SC.state[i].score===v?null:v); paintHole(row,i); computeTotals();};
-    });
-    row.querySelectorAll("[data-p]").forEach(function(b){
-      b.onclick=function(){var v=+b.dataset.p; SC.state[i].putts=(SC.state[i].putts===v?null:v); paintHole(row,i);};
-    });
-    row.querySelectorAll("[data-fir] .sb").forEach(function(b){
-      b.onclick=function(){var v=b.dataset.v==="1"; SC.state[i].fir=(SC.state[i].fir===v?null:v); paintHole(row,i);};
-    });
-    row.querySelectorAll("[data-gir] .sb").forEach(function(b){
-      b.onclick=function(){var v=b.dataset.v==="1"; SC.state[i].gir=(SC.state[i].gir===v?null:v); paintHole(row,i);};
-    });
-    row.querySelectorAll("[data-tee]").forEach(function(b){
-      b.onclick=function(){var v=b.dataset.tee; SC.state[i].tee=(SC.state[i].tee===v?null:v); paintHole(row,i);};
-    });
-    row.querySelectorAll("[data-firmiss] .sb").forEach(function(b){
-      b.onclick=function(){var v=b.dataset.m; SC.state[i].firMiss=(SC.state[i].firMiss===v?null:v); paintHole(row,i);};
-    });
-    row.querySelectorAll("[data-girmiss] .sb").forEach(function(b){
-      b.onclick=function(){var v=b.dataset.m; SC.state[i].girMiss=(SC.state[i].girMiss===v?null:v); paintHole(row,i);};
-    });
-    row.querySelector("[data-par]").addEventListener("change",function(){
-      var v=parseInt(this.value,10); if(v>=3&&v<=6){SC.pars[i]=v; var keep=SC.state; SC._load=null; var st=keep; buildHoles(); SC.state=st;
-        hl.querySelectorAll(".hole2").forEach(function(r){paintHole(r,+r.dataset.i);}); computeTotals();}
-    });
-    paintHole(row,i);
-  });
-  computeTotals();
-}
-function paintHole(row,i){
-  var st=SC.state[i],par=SC.pars[i];
-  row.querySelectorAll("[data-s]").forEach(function(b){
-    var v=+b.dataset.s,on=st.score===v;
-    b.className="sb"+(on?" on"+(v<par?" under":(v>par?" over":"")):"");
-  });
-  row.querySelectorAll("[data-p]").forEach(function(b){b.classList.toggle("on",st.putts===+b.dataset.p);});
-  row.querySelectorAll("[data-fir] .sb").forEach(function(b){b.classList.toggle("on",st.fir!=null&&(b.dataset.v==="1")===st.fir);});
-  row.querySelectorAll("[data-gir] .sb").forEach(function(b){b.classList.toggle("on",st.gir!=null&&(b.dataset.v==="1")===st.gir);});
-  if(st.fir!==false)st.firMiss=null;
-  if(st.gir!==false)st.girMiss=null;
-  row.querySelectorAll("[data-tee]").forEach(function(b){b.classList.toggle("on",st.tee===b.dataset.tee);});
-  var fm=row.querySelector("[data-firmiss]");
-  if(fm){fm.classList.toggle("on",st.fir===false);fm.querySelectorAll(".sb").forEach(function(b){b.classList.toggle("on",st.firMiss===b.dataset.m);});}
-  var gm=row.querySelector("[data-girmiss]");
-  if(gm){gm.classList.toggle("on",st.gir===false);gm.querySelectorAll(".sb").forEach(function(b){b.classList.toggle("on",st.girMiss===b.dataset.m);});}
-  var res=row.querySelector("[data-res]");
-  if(st.score!=null){var d=st.score-par;res.textContent=toParStr(d);res.className="hres "+toParClass(d);}
-  else{res.textContent="";res.className="hres";}
-}
-function computeTotals(){
-  var out=0,inn=0,par=0,any=false;
-  SC.state.forEach(function(h,i){
-    if(h.score!=null){any=true; if(SC.nums[i]<=9)out+=h.score;else inn+=h.score; par+=SC.pars[i];}
-  });
-  document.getElementById("tOut").textContent=out||"–";
-  document.getElementById("tIn").textContent=inn||"–";
-  var tot=out+inn;
-  document.getElementById("tTot").textContent=any?tot:"–";
-  var tp=document.getElementById("tPar");
-  if(any){var d=tot-par; tp.textContent=toParStr(d); tp.className="v topar "+toParClass(d);}
-  else{tp.textContent="E";tp.className="v topar even";}
-}
-document.getElementById("scSave").addEventListener("click",function(){
-  var sel=document.getElementById("scCourse");
-  var courseId=sel.value;
-  var courseName = courseId==="__other"?document.getElementById("scOther").value.trim():courseById(courseId).name;
-  if(courseId==="__other" && !courseName){document.getElementById("scMsg").textContent="Give the course a name first.";return;}
-  var anyScore=SC.state.some(function(h){return h.score!=null;});
-  if(!anyScore){document.getElementById("scMsg").textContent="Tap a score on at least one hole.";return;}
-  var scores=SC.state.map(function(h){return h.score;}),putts=SC.state.map(function(h){return h.putts;}),
-      fir=SC.state.map(function(h){return h.fir;}),gir=SC.state.map(function(h){return h.gir;}),pars=SC.pars.slice(),
-      tee=SC.state.map(function(h){return h.tee;}),firMiss=SC.state.map(function(h){return h.firMiss;}),girMiss=SC.state.map(function(h){return h.girMiss;});
-  var gross=0,parSum=0,played=0;
-  scores.forEach(function(s,i){if(s!=null){gross+=s;parSum+=pars[i];played++;}});
-  var mode=document.getElementById("scHoles").value;
-  var round={
-    id:SC.editId||("r"+Date.now()),
-    date:document.getElementById("scDate").value||isoToday(),
-    mode:mode, start:+document.getElementById("scStart").value||1, count:SC.nums.length,
-    holeNums:SC.nums.slice(), holes:played,
-    courseId:courseId, courseName:courseName,
-    scores:scores, putts:putts, fir:fir, gir:gir, pars:pars, tee:tee, firMiss:firMiss, girMiss:girMiss,
-    gross:gross, toPar:gross-parSum,
-    notes:document.getElementById("scNotes").value.trim(),
-    feels:SC.feels.slice(), leaks:SC.leaks.slice()
-  };
-  /* write par edits back onto the course card */
-  if(courseId!=="__other"){
-    var baseC=courseById(courseId); var full=baseC.pars.slice();
-    SC.nums.forEach(function(n,i){full[n-1]=pars[i];});
-    D.courses[courseId]=D.courses[courseId]||{}; D.courses[courseId].pars=full;
-  }
-  if(SC.editId){ D.rounds=D.rounds.map(function(r){return r.id===SC.editId?round:r;}); }
-  else D.rounds.push(round);
-  save();
-  showRoundsHome(); go("rounds");
-  renderToday();
-});
 
 /* ---------------- stats + history ---------------- */
 function renderStats(){
@@ -1296,19 +1373,22 @@ function renderStats(){
   var best=r18.length?Math.min.apply(null,r18.map(function(r){return r.gross;})):null;
   /* putts/fir/gir over rounds that tracked them */
   var cs=D.rounds.map(computeRound);
-  var puRounds=cs.filter(function(c){return c.hasPutts;});
-  var puttAvg=puRounds.length?avg(puRounds.map(function(c){return c.putts;})):null;
-  var firTot=0,firEl=0,girTot=0,girC=0;
-  cs.forEach(function(c){firTot+=c.fir;firEl+=c.firElig;girTot+=c.gir;girC+=c.girCount;});
+  var firTot=0,firEl=0,girTot=0,girC=0,pt=0,ph=0,th=0,sc=0,sch=0,pen=0,hol=0;
+  cs.forEach(function(c){firTot+=c.fir;firEl+=c.firElig;girTot+=c.gir;girC+=c.girCount;
+    pt+=c.putts;ph+=c.puttHoles;th+=c.three;sc+=c.scr;sch+=c.scrCh;pen+=c.pen;hol+=c.holes;});
+  var puttAvg=ph?pt/ph*18:null;
   function cell(v,k){return '<div class="stat"><div class="v">'+v+'</div><div class="k">'+k+'</div></div>';}
   grid.innerHTML=
     cell(scoreAvg?scoreAvg.toFixed(1):"—","Scoring avg")+
     cell(parAvg!=null?toParStr(Math.round(parAvg)):"—","Avg to par")+
     cell(best||"—","Best gross")+
-    cell(puttAvg?puttAvg.toFixed(1):"—","Putts / rd")+
     cell(firEl?Math.round(firTot/firEl*100)+"%":"—","Fairways")+
-    cell(girC?Math.round(girTot/girC*100)+"%":"—","Greens");
-  document.getElementById("statHint").textContent="Scoring average over your last "+recent.length+" eighteen-hole round"+(recent.length===1?"":"s")+". Fairways & greens across all rounds where you tracked them.";
+    cell(girC?Math.round(girTot/girC*100)+"%":"—","Greens")+
+    cell(sch?Math.round(sc/sch*100)+"%":"—","Up &amp; down")+
+    cell(puttAvg?puttAvg.toFixed(1):"—","Putts / 18")+
+    cell(ph?(th/ph*18).toFixed(1):"—","3-putts / 18")+
+    cell(hol?(pen/hol*18).toFixed(1):"—","Penalties / 18");
+  document.getElementById("statHint").textContent="Scoring average over your last "+recent.length+" eighteen-hole round"+(recent.length===1?"":"s")+". Everything else across all rounds, scaled per 18 holes so 9-hole rounds count fairly. Up & down = par or better after missing the green.";
 }
 function buildClaudeExport(range){
   var sorted=D.rounds.slice().sort(function(a,b){return a.date<b.date?1:-1;});
@@ -1317,11 +1397,11 @@ function buildClaudeExport(range){
   var L=[];
   L.push("GOLF DATA EXPORT — "+isoToday());
   L.push("Handicap index: "+ci.val.toFixed(1)+(ci.provisional?" (starting index, provisional)":"")+" · Rounds in export: "+pick.length+" of "+D.rounds.length);
-  L.push("Key: score/par · tee club · FW hit/miss side · GIR hit/miss side · putts. Blank = not logged.");
+  L.push("Key: score/par · tee club · FW hit/miss side · GIR hit/miss side · putts · penalty strokes. Blank = not logged.");
   pick.slice().reverse().forEach(function(r){
     var c=r.courseId==="__other"?r.courseName:(courseById(r.courseId)?courseById(r.courseId).name:r.courseName);
     L.push("");
-    L.push("=== "+r.date+" · "+(c||"Course")+" · "+(r.holeNums?r.holeNums.length:(r.holes||18))+" holes · "+r.gross+" ("+toParStr(r.toPar)+") ===");
+    L.push("=== "+r.date+" · "+(c||"Course")+" · "+(r.holeNums?r.holeNums.length:(r.holes||18))+" holes"+(r.teeBox&&r.teeBox.name?" · "+r.teeBox.name+" tees":"")+" · "+r.gross+" ("+toParStr(r.toPar)+") ===");
     if(r.feels&&r.feels.length)L.push("Swing thoughts: "+r.feels.join(" | "));
     if(r.leaks&&r.leaks.length)L.push("Shots leaked: "+r.leaks.join(", "));
     var miss={L:"left",R:"right",S:"short",G:"long"};
@@ -1333,6 +1413,7 @@ function buildClaudeExport(range){
       if(r.fir&&r.fir[i]!=null)bits.push(r.fir[i]?"FW hit":"FW miss"+(r.firMiss&&r.firMiss[i]?" "+miss[r.firMiss[i]]:""));
       if(r.gir&&r.gir[i]!=null)bits.push(r.gir[i]?"GIR":"GIR miss"+(r.girMiss&&r.girMiss[i]?" "+miss[r.girMiss[i]]:""));
       if(r.putts&&r.putts[i]!=null)bits.push(r.putts[i]+" putt"+(r.putts[i]===1?"":"s"));
+      if(r.pen&&r.pen[i])bits.push(r.pen[i]+" penalty");
       L.push(bits.join(" · "));
     });
     if(r.notes)L.push("Notes: "+r.notes);
@@ -1376,6 +1457,7 @@ function renderRoundList(){
     if(c.hasPutts)sub.push(c.putts+" putts");
     if(c.firElig)sub.push("FIR "+c.fir+"/"+c.firElig);
     if(c.girCount)sub.push("GIR "+c.gir+"/"+c.girCount);
+    if(r.teeBox&&r.teeBox.name)sub.push(r.teeBox.name+" tees");
     var name=r.courseId==="__other"?r.courseName:(courseById(r.courseId)?courseById(r.courseId).name:r.courseName);
     return '<div class="round" data-rid="'+r.id+'">'+
       '<div class="round-top">'+
@@ -1392,7 +1474,7 @@ function renderRoundList(){
       '</div>';
   }).join("");
   el.querySelectorAll("[data-edit]").forEach(function(b){
-    b.onclick=function(){var r=D.rounds.filter(function(x){return x.id===b.dataset.edit;})[0]; if(r)openScorecard(r);};
+    b.onclick=function(){var r=D.rounds.filter(function(x){return x.id===b.dataset.edit;})[0]; if(r)editRound(r);};
   });
   el.querySelectorAll("[data-del]").forEach(function(b){
     b.onclick=function(){
@@ -1577,6 +1659,7 @@ function renderCourses(){
         '<div class="field"><label>Slope</label><input type="number" data-cf="slope" value="'+c.slope+'"></div>'+
       '</div>'+
       '<div style="margin-top:9px;display:flex;gap:8px"><button class="btn btn-sm btn-ghost" data-pars="'+c.id+'">Pars</button>'+
+        '<button class="btn btn-sm btn-ghost" data-tees="'+c.id+'">Tees</button>'+
         '<button class="btn btn-sm" data-savec="'+c.id+'">Save</button>'+
         (c.custom?'<button class="btn btn-sm btn-danger" data-delc="'+c.id+'">Delete</button>':'')+'</div>'+
       '</div>';
@@ -1589,6 +1672,7 @@ function renderCourses(){
       D.courses[id]=o; save(); renderCourses(); flash(b,"Saved");
     };
   });
+  el.querySelectorAll("[data-tees]").forEach(function(b){b.onclick=function(){editTees(b.dataset.tees);};});
   el.querySelectorAll("[data-pars]").forEach(function(b){
     b.onclick=function(){editPars(b.dataset.pars);};
   });
@@ -1597,6 +1681,26 @@ function renderCourses(){
       D.customCourses=D.customCourses.filter(function(x){return x.id!==b.dataset.delc;});
       delete D.courses[b.dataset.delc]; save(); renderCourses();});};
   });
+}
+function editTees(id){
+  var c=courseById(id), tees=JSON.parse(JSON.stringify(teesFor(c)));
+  function draw(){
+    openModal('<h3>'+esc(c.name)+' — tees</h3><div class="hint" style="margin-top:0">Rating and slope are on the scorecard for each tee. They make your handicap maths exact.</div>'+
+      tees.map(function(t,k){return '<div class="mini-in" style="grid-template-columns:1.3fr 1fr 1fr auto;align-items:end">'+
+        '<div class="field"><label>Tee</label><input type="text" data-tk="'+k+'" data-tf="name" value="'+esc(t.name)+'"></div>'+
+        '<div class="field"><label>Rating</label><input type="number" step="0.1" data-tk="'+k+'" data-tf="cr" value="'+(t.cr==null?'':t.cr)+'"></div>'+
+        '<div class="field"><label>Slope</label><input type="number" data-tk="'+k+'" data-tf="slope" value="'+(t.slope==null?'':t.slope)+'"></div>'+
+        '<button class="btn btn-sm btn-ghost" data-trm="'+k+'" style="height:40px">Remove</button></div>';}).join("")+
+      '<button class="btn btn-block btn-ghost" id="tAdd" style="margin-top:12px">Add a tee</button>'+
+      '<button class="btn btn-pri btn-block" id="tSave" style="margin-top:8px">Save tees</button>');
+    function read(){document.querySelectorAll("[data-tk]").forEach(function(inp){var t=tees[+inp.dataset.tk],f=inp.dataset.tf;
+      t[f]=f==="name"?inp.value.trim():(inp.value===""?null:parseFloat(inp.value));});}
+    document.querySelectorAll("[data-trm]").forEach(function(b){b.onclick=function(){read();tees.splice(+b.dataset.trm,1);draw();};});
+    document.getElementById("tAdd").onclick=function(){read();tees.push({name:"",cr:c.cr,slope:c.slope});draw();};
+    document.getElementById("tSave").onclick=function(){read();
+      D.courses[id]=D.courses[id]||{}; D.courses[id].tees=tees.filter(function(t){return t.name;}); save(); closeModal(); renderCourses();};
+  }
+  draw();
 }
 function editPars(id){
   var c=courseById(id); var pars=(D.courses[id]&&D.courses[id].pars)||c.pars.slice();
@@ -1695,6 +1799,9 @@ function bootRender(){
   document.getElementById("plDate").value=isoToday();
 }
 load(); bootRender();
+if("serviceWorker" in navigator && /github\.io$|^localhost$/.test(location.hostname)){
+  window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){});});
+}
 </script>
 </body>
 </html>
