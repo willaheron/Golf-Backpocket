@@ -218,6 +218,17 @@
   .livegoals{display:flex;gap:6px;margin:-4px 0 10px;flex-wrap:wrap}
   .lg{font-size:12px;font-weight:600;color:var(--ink-soft);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px 10px}
   .lg.bad{color:#d9473d;border-color:#ffb3ad}
+  .tmcols{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .tmcol{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;padding:7px 9px;border-radius:9px;background:var(--pill);border:1px solid var(--line)}
+  .tmcol i{font-style:normal;font-size:10.5px;color:var(--muted);min-width:14px;font-variant-numeric:tabular-nums}
+  .drill-svg{width:100%;height:auto;display:block;margin:2px 0 4px;color:var(--ink)}
+  .drill-svg .dl{font-size:12px;fill:currentColor;fill-opacity:.65;font-family:var(--font)}
+  .dlegend{display:flex;gap:16px;font-size:12px;color:var(--ink-soft);margin:2px 0 8px}
+  .dlegend i{display:inline-block;width:22px;height:0;border-top:2.5px solid;vertical-align:middle;margin-right:6px}
+  .dlegend .lg-bad{border-color:#ff6b4a;border-top-style:dashed}
+  .dlegend .lg-good{border-color:#22b07d}
+  .dsteps{margin:6px 0 0;padding-left:18px;font-size:13.5px;color:var(--ink-soft);line-height:1.5}
+  .dsteps li{margin:5px 0}
   .caddy-p{font-size:15px;line-height:1.6;color:var(--ink)}
   .caddy-d{margin-top:8px}
   .directive b{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
@@ -796,43 +807,69 @@ html:not([data-theme]){background:#edf1f6 !important}
     <div class="subtabs" id="pracTabs">
       <button class="subtab on" data-p="start">Start here</button>
       <button class="subtab" data-p="wed">Wednesday</button>
+      <button class="subtab" data-p="home">Home</button>
       <button class="subtab" data-p="wknd">Weekend</button>
-      <button class="subtab" data-p="ladder">Ladder</button>
+      <button class="subtab" data-p="tm">Trackman</button>
+      <button class="subtab" data-p="drills">Drills</button>
       <button class="subtab" data-p="long">Long clubs</button>
-      <button class="subtab" data-p="capture">Capture</button>
+      <button class="subtab" data-p="ladder">Lessons</button>
       <button class="subtab" data-p="log">Log</button>
     </div>
 
     <!-- START -->
     <div class="sub-pane on" id="p-start">
-      <div class="note"><b>The system.</b> You're self-directing between occasional lessons. This page is the plan so a quiet few weeks never means starting from scratch. Three pillars, one rhythm, one rule.</div>
+      <div class="note"><b>Current focus: club path.</b> Trackman (14 Nov) confirmed an out-to-in path on every club (7-iron −5°, 2-iron −6°). Compression is already good, so it's off the list. Everything this block is built to move your 7-iron path from −5° towards −2°.</div>
       <div class="card">
-        <h2>Three pillars</h2>
-        <p class="kv"><b>1 · Long game</b> <span>— Wednesdays. Climb the lesson ladder on the 7-iron, bed in the driver, sweep the long clubs.</span></p>
-        <p class="kv"><b>2 · Short game &amp; putting</b> <span>— every second weekend. Open-face wedge work, distance ladders, the putting rebuild.</span></p>
-        <p class="kv"><b>3 · Play</b> <span>— finish range sessions by actually playing holes, and log real rounds here.</span></p>
+        <h2>Four pillars</h2>
+        <p class="kv"><b>1 · Long game</b> <span>— Wednesdays. Path drills on the 7-iron, sweep the 2-iron, face control with the driver.</span></p>
+        <p class="kv"><b>2 · Home</b> <span>— 10 minutes, 4–5 days a week. Chair drill, slow pump reps, finish holds, putting mat.</span></p>
+        <p class="kv"><b>3 · Short game &amp; putting</b> <span>— every second weekend. Open-face wedge work, distance ladders, the putting rebuild.</span></p>
+        <p class="kv"><b>4 · Play</b> <span>— log real rounds here; the goals and caddy's read show if the range work is transferring.</span></p>
       </div>
       <div class="card">
         <h2>The weekly rhythm</h2>
-        <p class="kv"><b>Wed ~1.5hr</b> <span>— long game at Precision (Trackman bay).</span></p>
+        <p class="kv"><b>Wed ~80 balls</b> <span>— Trackman bay. Score only the transfer shots.</span></p>
+        <p class="kv"><b>Home, most days</b> <span>— 10–13 minutes, no ball needed.</span></p>
         <p class="kv"><b>Alt. weekend ~1.5hr</b> <span>— short game, chipping green, bunkers, putting.</span></p>
-        <p class="kv"><b>Optional</b> <span>— a green-only putting touch-up when you can.</span></p>
       </div>
-      <div class="note"><b>The one rule:</b> one swing thought per ball — never two. Pick the block's focus, commit, hit, reset. Stacking cues is how good sessions turn to mud.</div>
+      <div class="note"><b>Two rules.</b> One swing thought per ball, never two. And hold every full-swing finish for 3 seconds; if you fall back, that shot doesn't count.</div>
       <div class="card">
         <h2>When to bring data back to the chat</h2>
-        <p class="kv"><b>Driver day</b> <span>— first reshafted-driver session, paste the numbers.</span></p>
-        <p class="kv"><b>Wedge carries</b> <span>— after a 50/54/58 calibration session.</span></p>
-        <p class="kv"><b>Every 3–4 Wednesdays</b> <span>— batch your 7-iron exports to check dispersion.</span></p>
+        <p class="kv"><b>Every 2–3 Wednesdays</b> <span>— Trackman PDF export (columns in the Trackman tab) plus Practice → Log → Copy log.</span></p>
+        <p class="kv"><b>Every 4–5 rounds</b> <span>— Rounds → Send to Claude.</span></p>
         <p class="kv"><b>Anything stuck</b> <span>— a number that looks off or a feel that won't come.</span></p>
       </div>
     </div>
 
     <!-- WEDNESDAY -->
     <div class="sub-pane" id="p-wed">
-      <div class="pilltag">Wednesday · long game · ~1.5hr</div>
-      <div class="note">Warm in, climb the <b>lesson ladder</b> on the 7-iron, bed in the reshafted driver, sweep the long clubs, then finish by playing. One swing thought per ball.</div>
+      <div class="pilltag">Wednesday · path block · ~80 balls</div>
+      <div class="note">Drills first, then score the transfer shots. <b>Hold every finish for 3 seconds</b>. Set the Trackman columns from the Trackman tab before you start.</div>
       <div id="wedBlocks"></div>
+    </div>
+
+    <!-- HOME -->
+    <div class="sub-pane" id="p-home">
+      <div class="pilltag">Home · 10–13 minutes · 4–5 days a week</div>
+      <div class="note">Built for a small room, no ball. Slow reps genuinely rewire movement patterns, as long as every rep is exact. Film from behind once a week to check.</div>
+      <div id="homeBlocks"></div>
+    </div>
+
+    <!-- TRACKMAN -->
+    <div class="sub-pane" id="p-tm">
+      <div class="note">You get 10 columns. Set these for each club so every session is comparable, then export the PDF from the report and paste or upload it in the chat.</div>
+      <div id="tmList"></div>
+      <div class="card">
+        <h2>Baseline (14 Nov) → 4-week targets</h2>
+        <div id="tmTargets"></div>
+        <div class="hint">7-iron figures use solid full swings only (club speed 35 m/s+). Drill and half swings skew averages.</div>
+      </div>
+    </div>
+
+    <!-- DRILLS -->
+    <div class="sub-pane" id="p-drills">
+      <div class="note">How to set up each drill. <span style="color:#ff6b4a">Dashed</span> = the swing you're fixing, <span style="color:#22b07d">solid</span> = the one you want.</div>
+      <div id="drillList"></div>
     </div>
 
     <!-- WEEKEND -->
@@ -844,7 +881,7 @@ html:not([data-theme]){background:#edf1f6 !important}
 
     <!-- LADDER -->
     <div class="sub-pane" id="p-ladder">
-      <div class="note">Climb lessons <b>1 → 5</b> in order on the 7-iron, stacking as you go. Groove one, add the next on top. This week's primary lesson gets the longest block.</div>
+      <div class="note">Your lesson reference. The Wednesday path block now covers lessons 4 and 5 directly. <b>Lesson 2 is parked</b>: Trackman shows compression is already good.</div>
       <div id="ladderList"></div>
     </div>
 
@@ -854,15 +891,9 @@ html:not([data-theme]){background:#edf1f6 !important}
       <div id="longList"></div>
       <div class="card">
         <h2>2 iron vs 5 wood off the tee</h2>
-        <p class="kv"><b>2 iron</b> <span>— tight holes, accuracy priority, into/cross wind, firm running fairways. Low, penetrating, less time in the wind. Your best wind club.</span></p>
+        <p class="kv"><b>2 iron</b> <span>— tight holes, into/cross wind, firm running fairways. Low and penetrating. While the path is being fixed, check your tee-shot data in the app before treating it as the safe option.</span></p>
         <p class="kv"><b>5 wood</b> <span>— max carry, soft conditions, long par 3s needing a soft landing, calm days where distance wins.</span></p>
       </div>
-    </div>
-
-    <!-- CAPTURE -->
-    <div class="sub-pane" id="p-capture">
-      <div class="note">What to screenshot / export off the Trackman so numbers are comparable week to week.</div>
-      <div id="capList"></div>
     </div>
 
     <!-- LOG -->
@@ -1966,18 +1997,17 @@ function renderRoundList(){
 
 /* ---------------- PRACTICE content ---------------- */
 var WED_BLOCKS=[
-  {id:"wed-warm",t:"Warm-up",d:"Short iron, half swings, building rhythm. Chase centre strike, not distance. Loosen up and find tempo before any mechanics.",n:"12"},
-  {id:"wed-ladder",t:"7-iron ladder",d:"Climb lessons 1 → 5 in order, stacking as you go. This week's primary lesson gets the longest block.",n:"50",
-    dd:["<b>Lesson 1 — 14 balls.</b> Rory slot drill first, then hit. Hips + early vertical hinge.",
-        "<b>Lesson 2 — 10 balls.</b> Add lead-wrist-forward through the ball.",
-        "<b>Lesson 3 — 8 balls.</b> One slow-mo rehearsal, then one at pace. Hold posture, shorter top.",
-        "<b>Lesson 4 — 10 balls.</b> Hips-rotate + on-knees drag drill between shots.",
-        "<b>Lesson 5 — 8 balls.</b> Quiet head — rotate around the hip, finish the ladder."]},
-  {id:"wed-driver",t:"Driver",d:"Bed in the reshafted driver. Smooth tempo — the shaft does the work, don't add effort. Watch the Trackman targets.",n:"20",
-    dd:["Target: spin 2,200–2,600 rpm · launch 12–14° · smash &gt; 1.45.","One swing thought per ball. If it drifts, drop back to a 7-iron feel, then return."]},
-  {id:"wed-long",t:"5 wood & 2 iron",d:"Build trust in the long clubs. Sweep the 5 wood off the deck; low tee the 2 iron and keep it penetrating.",n:"15",
-    dd:["5 wood: ball forward, long shaft does the work.","2 iron: low tee, trust the loft, don't help it up. Low and running is a win.","Watch attack angle on both — shallow sweep, not a steep chop."]},
-  {id:"wed-play",t:"Play",d:"Finish by actually playing. Pick holes, commit to a target, go through a full routine each ball. Transfers the range work to the course.",n:"—"}
+  {id:"w2-warm",t:"Warm-up",d:"Half swings with a 7-iron. Chest low, turn around the ball, hold a balanced finish on every one.",n:"10"},
+  {id:"w2-obst",t:"Obstacle drill · 7-iron",d:"Towel or ball sleeve outside and behind the ball. Come over the top and you clip it. See the Drills tab for placement.",n:"20",
+    dd:["<b>10 half swings</b>, then <b>10 full</b>.","Placement: about 10 cm beyond the ball line, 15 cm behind the ball (roughly level with your trail foot).","Trackman target: <b>club path −2° or better</b>."]},
+  {id:"w2-closed",t:"Closed stance · 7-iron",d:"Trail foot pulled back about 15 cm, shoulders still square to the target. Makes an in-to-out swing feel natural.",n:"10"},
+  {id:"w2-pump",t:"Pump drill · 7-iron",d:"Swing to the top, bump onto the lead foot and let the trail elbow drop to your hip. Pump twice, then swing through.",n:"10"},
+  {id:"w2-trans",t:"Transfer · 7-iron, no aids",d:"Normal swings, normal stance, no towel: does the drill feel carry over? These are the shots you score. Note path, face-to-path and smash in the log.",n:"10",
+    dd:["Targets: <b>path −2° or better</b>, <b>face-to-path −2° to +3°</b>, smash 1.30+.","Only count swings where you held the finish."]},
+  {id:"w2-2i",t:"2-iron sweep · low tee only",d:"Fingertip-high tee, towel a little wider (15 cm out, 25 cm back). Sweep the ball off and leave the tee in the ground.",n:"10",
+    dd:["If the tee flies or you take a divot, you chopped.","Trackman target: <b>attack angle −2° to −3°</b>, low point within 10 cm of the ball.","Always a low tee, the way you'd use it on the course, so the numbers are comparable."]},
+  {id:"w2-drv",t:"Driver · face control",d:"Pick a precise start line (alignment stick or a mark on the screen). Judge every ball by where it starts.",n:"10",
+    dd:["Trackman target: <b>face angle within ±2°</b>.","Path is secondary on driver for now; it improves as the irons do."]}
 ];
 var WKND_BLOCKS=[
   {id:"wk-chip",t:"Chipping",d:"Open the face to expose the bounce, weight forward throughout — the corrected technique that suits your SM9 grinds. Land spot, not the hole.",n:"20 min",
@@ -1988,22 +2018,57 @@ var WKND_BLOCKS=[
   {id:"wk-putt",t:"Putting",d:"Stroke rebuild in progress — slight arc. Technique first, equipment second. Lag control then the 1-metre must-makes.",n:"20 min",
     dd:["Lag: roll long putts to a towel/tee circle — distance, not line.","Short: a gate of tees just wider than the ball; make ten in a row before you leave."]}
 ];
+var HOME_BLOCKS=[
+  {id:"hm-chair",t:"Chair drill",d:"No club: arms crossed over your chest, golf posture, backside touching a chair or wall. Turn back and through slowly, keeping it touching. Stops early extension and falling back.",n:"3 min"},
+  {id:"hm-pump",t:"Slow-motion pump drill",d:"Filmed from behind on your phone. Trail elbow drops to the hip, club falls in behind you. Ten exact reps beat fifty sloppy ones.",n:"3 min"},
+  {id:"hm-finish",t:"Finish holds",d:"Ten slow swings, each held 3 seconds: weight on the lead foot, trail foot on its toe, belt buckle to the target.",n:"2 min"},
+  {id:"hm-putt",t:"Putting mat",d:"Start-line gate (two tees just wider than the ball), then ten 1-metre putts in a row. Part of the stroke rebuild.",n:"5 min"}
+];
+var TM_CLUBS=[
+  {t:"7-iron · path work",tag:"Every Wednesday",cols:["Club Speed","Carry","Side","Club Path","Face Ang.","Face To Path","Attack Ang.","Smash Fac.","Imp. Offset","Imp. Height"],
+   note:"Low point and dynamic loft are dropped: your compression is already good. Impact offset and height show exactly where mishits come from."},
+  {t:"2-iron · sweep",tag:"Low tee only",cols:["Club Speed","Carry","Side","Club Path","Face Ang.","Face To Path","Attack Ang.","Low Point","Smash Fac.","Imp. Offset"],
+   note:"Attack angle and low point tell you if you're sweeping or chopping. Only valid off a consistent low tee."},
+  {t:"Driver · face control",tag:"Every Wednesday",cols:["Club Speed","Carry","Side","Club Path","Face Ang.","Face To Path","Attack Ang.","Smash Fac.","Spin Rate","Imp. Offset"],
+   note:"Face angle is the key number: it sets the start line. Spin target 2,200–2,600 rpm. Heel and toe strikes bend the ball on their own, so check impact offset before blaming path."},
+  {t:"Wedges · calibration",tag:"When building your carry chart",cols:["Club Speed","Carry","Side","Spin Rate","Launch Ang.","Dyn. Loft","Attack Ang.","Height","Smash Fac.","Face Ang."],
+   note:"Hit sets at full, 10:30 and 9:00 swings with each wedge and note the average carry."}
+];
+var TM_TARGETS=[
+  ["7-iron path","−5.0°","−2° or better"],["7-iron face-to-path","+6.2°","−2° to +3°"],["7-iron mishits (smash < 1.15)","about 1 in 2","fewer than 1 in 4"],
+  ["7-iron carry (solid)","138 m","145–150 m"],["2-iron path","−6.0°","−3° or better"],["2-iron attack angle","−7.0° (mixed tees)","−2° to −3°"],
+  ["Driver face angle","−7.3° to +4.0°","within ±2°"],["Driver side spread","26.7 m","under 15 m"]
+];
 var LADDER=[
   {n:1,t:"Hips + early wrist hinge",feel:"Rotate the hips and set the wrists early (vertical) in the takeaway.",drill:"Rory slot drill — rehearse the halfway-back position, then hit.",check:"Shaft sets on plane; no flat, dragged takeaway."},
-  {n:2,t:"Lead wrist forward through impact",feel:"Flat-to-bowed lead wrist through the ball — hands ahead, de-loft controlled.",drill:"Impact-bag or slow reps feeling the lead wrist lead, clubface stable.",check:"Divot after the ball; penetrating flight, not scoopy."},
+  {n:2,t:"Lead wrist forward through impact · parked",feel:"Flat-to-bowed lead wrist through the ball. Parked for now: Trackman shows compression is already good (dynamic loft about 21° on the 7-iron).",drill:"Use only as a face-control tool if the face is staying open. If it hooks, ease off.",check:"Small draw, not a hook. Face-to-path −2° to +3°."},
   {n:3,t:"Maintain posture in the backswing",feel:"Hold your spine angle and height — no standing up or swaying off the ball.",drill:"One slow-mo rehearsal holding posture, then one at pace. Shorter top.",check:"Head height steady to the top; backswing feels shorter but connected."},
-  {n:4,t:"Hips fire first — bump & turn (+ trail-arm tuck)",feel:"Lower body initiates; trail elbow tucks toward the trouser pocket before the hands release.",drill:"Headcover under the trail armpit, keep it pinned. On-knees drag drill between shots.",check:"On the Trackman an over-the-top move shows as an out-to-in path — you want neutral to in-to-out."},
-  {n:5,t:"Quiet head",feel:"Stable centre — rotate around the hip with the head quiet, not frozen.",drill:"Rotate to a full finish while keeping the head still through impact.",check:"Head doesn't lunge toward the ball in transition; strike centres up."}
+  {n:4,t:"Hips fire first — bump & turn",feel:"Lower body initiates while the arms wait. Pairs with the pump drill.",drill:"Pump drill: trail elbow drops to the hip before the shoulders turn.",check:"Club path moving from −5° towards −2° on the Trackman."},
+  {n:5,t:"Quiet head",feel:"Stable centre — rotate around the hip with the head quiet, not frozen.",drill:"Rotate to a full finish while keeping the head still through impact. Hold the finish 3 seconds.",check:"No falling back after impact; strike centres up (smash 1.30+)."}
 ];
 var LONG=[
   {t:"5 wood · off the deck & tee",tag:"195–210m deck · 205–220m tee",pts:["Ball forward, sweep it — the long shaft does the work, don't add effort.","Smooth tempo is the whole game; the Ventus Blue stiff suits it perfectly.","Off the deck for max carry and soft landings; off a tee on long par 4s."]},
-  {t:"2 iron · tee only",tag:"200–215m · wind & accuracy",pts:["Low tee, ball forward of centre. This is your wind and accuracy club — low is the point.","Trust the loft — don't help it up. A low runner that releases is a win.","Same sweep feel as the 5 wood, just off a tee. Can't hit off the deck — tee only."]}
+  {t:"2 iron · tee only",tag:"Low tee · sweep it",pts:["Fingertip-high tee, ball just forward of centre. Sweep the ball off and leave the tee in the ground.","On 14 Nov the path was −6° with a steep attack, carrying about 175 m and missing both ways. Until the path improves, it isn't automatically the safe club.","Drill: towel 15 cm outside and 25 cm behind the ball (see Drills). Target attack angle −2° to −3°."]}
 ];
-var CAPTURE=[
-  {t:"Driver",tag:"Every driver block, while bedding in the reshaft",chips:["Carry (avg)","Carry spread","Ball speed","Launch","Spin","Smash"],note:"Target: spin 2,200–2,600 rpm · launch 12–14° · smash &gt; 1.45."},
-  {t:"7 iron",tag:"Batch across 3–4 Wednesdays",chips:["Carry (avg)","Carry spread","Launch","Spin","Smash","Low point"],note:"The spread is the number that matters — it's your consistency, dropping as the ladder beds in."},
-  {t:"5 wood & 2 iron",tag:"While you build trust in them",chips:["Attack angle","Smash","Carry (avg)","Carry spread","Launch","Offline L/R"],note:"Attack angle is the key one — it tells us if you're sweeping or chopping."},
-  {t:"Wedge grid",tag:"After a calibration session",chips:["50° carry","54° carry","58° carry","Part-swing carries"],note:"Build the scoring distances you can commit to on the course."}
+var C_BAD="#ff6b4a", C_GOOD="#22b07d";
+var DRILLS=[
+  {t:"Obstacle drill",tag:"Path · 7-iron and 2-iron",
+   svg:'<svg viewBox="0 0 380 250" class="drill-svg" role="img" aria-label="Top-down view, right-hander: towel outside and behind the ball"><line x1="340" y1="130" x2="50" y2="130" stroke="currentColor" stroke-opacity=".35" stroke-dasharray="4 4"/><text x="45" y="118" class="dl">← Target</text><rect x="218" y="96" width="44" height="16" rx="4" fill="#d9a441" fill-opacity=".85"/><text x="262" y="84" text-anchor="end" class="dl">Towel / sleeve</text><line x1="310" y1="75" x2="70" y2="185" stroke="'+C_BAD+'" stroke-width="2.5" stroke-dasharray="7 5"/><line x1="310" y1="170" x2="70" y2="90" stroke="'+C_GOOD+'" stroke-width="2.5"/><circle cx="190" cy="130" r="7" fill="#fff" stroke="currentColor" stroke-opacity=".5"/><rect x="150" y="196" width="18" height="30" rx="6" fill="currentColor" fill-opacity=".25"/><rect x="212" y="196" width="18" height="30" rx="6" fill="currentColor" fill-opacity=".25"/><text x="190" y="244" text-anchor="middle" class="dl">You</text></svg>',
+   legend:true,
+   steps:["View from above: the towel goes on the far side of the ball from you.","7-iron: about 10 cm beyond the ball line and 15 cm behind the ball. 2-iron: 15 cm out, 25 cm back.","Start with half swings. If you clip it, you came over the top.","Search: \"outside obstacle drill golf slice\"."]},
+  {t:"2-iron sweep",tag:"Attack angle · low tee",
+   svg:'<svg viewBox="0 0 380 210" class="drill-svg" role="img" aria-label="Side view, right-hander: steep chop versus sweep off a low tee"><text x="45" y="28" class="dl">← Target</text><line x1="40" y1="160" x2="340" y2="160" stroke="currentColor" stroke-opacity=".5" stroke-width="1.5"/><rect x="187" y="152" width="6" height="8" rx="1" fill="currentColor" fill-opacity=".5"/><circle cx="190" cy="144" r="8" fill="#fff" stroke="currentColor" stroke-opacity=".5"/><path d="M320 40 Q 205 120 160 185 Q 135 215 105 190" stroke="'+C_BAD+'" stroke-width="2.5" stroke-dasharray="7 5" fill="none"/><path d="M320 110 Q 230 152 190 152 Q 140 152 60 100" stroke="'+C_GOOD+'" stroke-width="2.5" fill="none"/><text x="340" y="180" text-anchor="end" class="dl">Mat</text></svg>',
+   legend:true,
+   steps:["Tee it low: a fingertip under the ball.","Sweep it off and leave the tee in the ground. Tee flying or a divot means you chopped.","Trackman: attack angle −2° to −3°, low point within 10 cm of the ball."]},
+  {t:"Closed stance",tag:"Path · in-to-out feel",
+   svg:'<svg viewBox="0 0 380 200" class="drill-svg" role="img" aria-label="Top-down view, right-hander: trail foot pulled back from the stance line"><line x1="340" y1="70" x2="50" y2="70" stroke="currentColor" stroke-opacity=".35" stroke-dasharray="4 4"/><text x="45" y="58" class="dl">← Target</text><circle cx="190" cy="70" r="7" fill="#fff" stroke="currentColor" stroke-opacity=".5"/><line x1="100" y1="125" x2="270" y2="125" stroke="currentColor" stroke-opacity=".25" stroke-dasharray="3 4"/><rect x="136" y="112" width="30" height="18" rx="6" fill="currentColor" fill-opacity=".3"/><rect x="222" y="138" width="30" height="18" rx="6" fill="'+C_GOOD+'" fill-opacity=".8"/><path d="M237 128 L237 136" stroke="'+C_GOOD+'" stroke-width="2"/><text x="262" y="178" text-anchor="end" class="dl">Trail foot back ~15 cm</text></svg>',
+   steps:["Normal set-up, then slide the trail foot straight back about 15 cm.","Keep the shoulders and hips square to the target. Only the foot moves.","Hit 10, then copy the feel from a normal stance."]},
+  {t:"Pump drill",tag:"Path · club drops inside",
+   steps:["Swing to the top of your backswing.","Start down with a small bump of pressure onto the lead foot. As it happens, let the trail elbow drop towards your trail hip so the club falls in behind you. Stop at hip height.","Back to the top. Do it twice, then on the third time swing through and hit.","Order: bump first, the drop rides with it, then turn. No knee squat, and never let the arms start the downswing on their own."]},
+  {t:"Chair drill",tag:"Home · early extension",
+   steps:["No club needed: cross your arms over your chest, hands on opposite shoulders.","Set up in golf posture with your backside just touching a chair back or wall.","Turn slowly back and through, keeping your backside touching the whole way. If it comes off, your hips pushed towards the ball.","Progress: hold a club across your chest the same way, then slow half swings with a club if you have the room."]},
+  {t:"Finish hold",tag:"Every full swing",
+   steps:["Hold the finish for 3 seconds: weight on the lead foot, trail foot up on its toe, belt buckle to the target.","Fall back or step out of it and that shot doesn't count.","Fixes the falling-backwards balance issue and early spin-out together."]}
 ];
 
 function renderPractice(){
@@ -2021,10 +2086,19 @@ function renderPractice(){
     return '<div class="card"><div class="pilltag">'+esc(c.tag)+'</div><h2 style="margin-bottom:8px">'+esc(c.t)+'</h2>'+
       '<ul class="dd" style="padding-top:0">'+c.pts.map(function(p){return '<li>'+esc(p)+'</li>';}).join("")+'</ul></div>';
   }).join("");
-  document.getElementById("capList").innerHTML=CAPTURE.map(function(c){
-    return '<div class="card"><div class="pilltag">'+esc(c.tag)+'</div><h2 style="margin-bottom:8px">'+esc(c.t)+'</h2>'+
-      '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:9px">'+c.chips.map(function(x){return '<span class="chip-t" style="pointer-events:none">'+esc(x)+'</span>';}).join("")+'</div>'+
-      '<div class="note" style="margin:0">'+c.note+'</div></div>';
+  document.getElementById("homeBlocks").innerHTML=HOME_BLOCKS.map(blockHTML).join("");
+  wireTicks(document.getElementById("homeBlocks"));
+  document.getElementById("tmList").innerHTML=TM_CLUBS.map(function(c){
+    return '<div class="card"><h2 style="margin-bottom:10px">'+esc(c.t)+'</h2>'+
+      '<div class="tmcols">'+c.cols.map(function(x,i){return '<span class="tmcol"><i>'+(i+1)+'</i>'+esc(x)+'</span>';}).join("")+'</div>'+
+      '<div class="note" style="margin:10px 0 0">'+esc(c.note)+'</div></div>';
+  }).join("");
+  document.getElementById("tmTargets").innerHTML='<table class="tbl"><thead><tr><th>Metric</th><th style="text-align:right">Now</th><th style="text-align:right">Target</th></tr></thead><tbody>'+
+    TM_TARGETS.map(function(r){return '<tr><td>'+esc(r[0])+'</td><td class="num">'+esc(r[1])+'</td><td class="num">'+esc(r[2])+'</td></tr>';}).join("")+'</tbody></table>';
+  document.getElementById("drillList").innerHTML=DRILLS.map(function(d){
+    return '<div class="card"><div class="pilltag">'+esc(d.tag)+'</div><h2 style="margin-bottom:8px">'+esc(d.t)+'</h2>'+(d.svg||'')+
+      (d.legend?'<div class="dlegend"><span><i class="lg-bad"></i>Fault</span><span><i class="lg-good"></i>Goal</span></div>':'')+
+      '<ol class="dsteps">'+d.steps.map(function(s){return '<li>'+esc(s)+'</li>';}).join("")+'</ol></div>';
   }).join("");
   renderPLog();
 }
