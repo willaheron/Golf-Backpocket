@@ -229,6 +229,15 @@
   .dlegend .lg-good{border-color:#22b07d}
   .dsteps{margin:6px 0 0;padding-left:18px;font-size:13.5px;color:var(--ink-soft);line-height:1.5}
   .dsteps li{margin:5px 0}
+  .rt-top{display:flex;justify-content:space-between;align-items:baseline}
+  .rt-count{font-size:12.5px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+  .rt-h{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin:14px 2px 8px}
+  .rt-row{display:flex;align-items:flex-start;gap:12px;width:100%;text-align:left;padding:11px 12px;margin-bottom:7px;border-radius:12px;
+    border:1px solid var(--line);background:var(--pill);color:var(--ink);font-size:14.5px;line-height:1.4}
+  .rt-box{flex:0 0 22px;height:22px;border-radius:7px;border:1.5px solid var(--muted);display:grid;place-items:center;margin-top:-1px}
+  .rt-row.on .rt-box{background:var(--green);border-color:var(--green)}
+  .rt-row.on .rt-box:after{content:"✓";color:var(--on-primary);font-size:13px;font-weight:800}
+  .rt-row.on .rt-txt{color:var(--ink-soft)}
   .caddy-p{font-size:15px;line-height:1.6;color:var(--ink)}
   .caddy-d{margin-top:8px}
   .directive b{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
@@ -806,6 +815,7 @@ html:not([data-theme]){background:#edf1f6 !important}
   <section class="screen" id="s-practice">
     <div class="subtabs" id="pracTabs">
       <button class="subtab on" data-p="start">Start here</button>
+      <button class="subtab" data-p="routine">Routine</button>
       <button class="subtab" data-p="wed">Wednesday</button>
       <button class="subtab" data-p="home">Home</button>
       <button class="subtab" data-p="wknd">Weekend</button>
@@ -839,6 +849,12 @@ html:not([data-theme]){background:#edf1f6 !important}
         <p class="kv"><b>Every 4–5 rounds</b> <span>— Rounds → Send to Claude.</span></p>
         <p class="kv"><b>Anything stuck</b> <span>— a number that looks off or a feel that won't come.</span></p>
       </div>
+    </div>
+
+    <!-- ROUTINE -->
+    <div class="sub-pane" id="p-routine">
+      <div class="note"><b>Practise it, don't read it on the course.</b> Run the full routine on every Transfer ball on Wednesdays and on the last 10 putts of the weekend block. Ticks clear when you leave, because a routine is run fresh each time.</div>
+      <div id="routineList"></div>
     </div>
 
     <!-- WEDNESDAY -->
@@ -2003,7 +2019,7 @@ var WED_BLOCKS=[
   {id:"w2-closed",t:"Closed stance · 7-iron",d:"Trail foot pulled back about 15 cm, shoulders still square to the target. Makes an in-to-out swing feel natural.",n:"10"},
   {id:"w2-pump",t:"Pump drill · 7-iron",d:"Swing to the top, bump onto the lead foot and let the trail elbow drop to your hip. Pump twice, then swing through.",n:"10"},
   {id:"w2-trans",t:"Transfer · 7-iron, no aids",d:"Normal swings, normal stance, no towel: does the drill feel carry over? These are the shots you score. Note path, face-to-path and smash in the log.",n:"10",
-    dd:["Targets: <b>path −2° or better</b>, <b>face-to-path −2° to +3°</b>, smash 1.30+.","Only count swings where you held the finish."]},
+    dd:["Targets: <b>path −2° or better</b>, <b>face-to-path −2° to +3°</b>, smash 1.30+.","Only count swings where you held the finish.","Run the <b>full pre-shot routine</b> (Routine tab) on every ball: think box behind it, play box over it."]},
   {id:"w2-2i",t:"2-iron sweep · low tee only",d:"Fingertip-high tee, towel a little wider (15 cm out, 25 cm back). Sweep the ball off and leave the tee in the ground.",n:"10",
     dd:["If the tee flies or you take a divot, you chopped.","Trackman target: <b>attack angle −2° to −3°</b>, low point within 10 cm of the ball.","Always a low tee, the way you'd use it on the course, so the numbers are comparable."]},
   {id:"w2-drv",t:"Driver · face control",d:"Pick a precise start line (alignment stick or a mark on the screen). Judge every ball by where it starts.",n:"10",
@@ -2016,7 +2032,7 @@ var WKND_BLOCKS=[
     dd:["Hit a set from each wedge, note the carry on the Trackman.","Add clock-face part-swings (7:30, 9:00, 10:30) once full carries are solid."]},
   {id:"wk-bunker",t:"Bunkers",d:"58° M grind, open face, splash the sand not the ball. Consistent entry point and a full finish.",n:"15 min"},
   {id:"wk-putt",t:"Putting",d:"Stroke rebuild in progress — slight arc. Technique first, equipment second. Lag control then the 1-metre must-makes.",n:"20 min",
-    dd:["Lag: roll long putts to a towel/tee circle — distance, not line.","Short: a gate of tees just wider than the ball; make ten in a row before you leave."]}
+    dd:["Lag: roll long putts to a towel/tee circle — distance, not line.","Short: a gate of tees just wider than the ball; make ten in a row before you leave.","Finish with 10 putts from different lengths, each with the <b>full putting routine</b> (Routine tab), as if on the course."]}
 ];
 var HOME_BLOCKS=[
   {id:"hm-chair",t:"Chair drill",d:"No club: arms crossed over your chest, golf posture, backside touching a chair or wall. Turn back and through slowly, keeping it touching. Stops early extension and falling back.",n:"3 min"},
@@ -2071,7 +2087,38 @@ var DRILLS=[
    steps:["Hold the finish for 3 seconds: weight on the lead foot, trail foot up on its toe, belt buckle to the target.","Fall back or step out of it and that shot doesn't count.","Fixes the falling-backwards balance issue and early spin-out together."]}
 ];
 
+var ROUTINES=[
+  {id:"posture",t:"Posture",sub:"Build from the ground up. Check in a mirror or the bay reflection.",groups:[
+    {h:null,items:["Grip neutral, pressure light (about 4/10)","Feet about shoulder-width, knees soft, athletic","Hinge from the hips: tailbone back, back long","Arms hang freely under the shoulders","Trail shoulder a touch lower (slight tilt away from the target)","Ball position: forward for driver, centre for wedges","Chin up: leave room for the lead shoulder to turn under","Shoulders square to the line (slice check)"]}]},
+  {id:"preshot",t:"Pre-shot routine",sub:"All the thinking happens behind the ball. Once you step in, you only execute. Doubt over the ball? Step off and start again.",groups:[
+    {h:"Think box · behind the ball",items:["Read it: lie, wind, distance, trouble","Commit: one shot, one club, one target","Rehearse: feel swing and say your swing thought","Pick a spot a metre ahead on the line"]},
+    {h:"Play box · over the ball, no thinking",items:["Set the clubface to your spot first","Set feet and body parallel to the line","One look at the target, settle","Trigger, smooth tempo, let it go"]}]},
+  {id:"putt",t:"Putting routine",sub:"Same split as the full swing. Read and decide behind the ball; over it, just roll it. Keep the time over the ball the same on every putt.",groups:[
+    {h:"Think box · behind the ball",items:["Read from behind the ball, crouched low; check from the low side on longer putts","Pick your start line and a spot on it 30–50 cm in front of the ball","Decide the pace: lag putts finish 30–50 cm past; short putts firm, inside edge or centre","Two practice strokes looking at the hole to feel the length"]},
+    {h:"Play box · over the ball, no thinking",items:["Set the putter face to your spot first, then your feet","Eyes over or just inside the line, grip pressure light","One look at the hole, eyes back to the ball","Stroke within 2–3 seconds; head still and listen for it to drop"]}]}
+];
+function renderRoutines(){
+  var el=document.getElementById("routineList"); if(!el)return;
+  el.innerHTML=ROUTINES.map(function(r){
+    var n=0;
+    var body=r.groups.map(function(g){
+      return (g.h?'<div class="rt-h">'+esc(g.h)+'</div>':'')+g.items.map(function(t){n++;
+        return '<button class="rt-row" data-rt="'+r.id+'"><span class="rt-box"></span><span class="rt-txt">'+esc(t)+'</span></button>';}).join("");
+    }).join("");
+    return '<div class="card" data-rcard="'+r.id+'"><div class="rt-top"><h2 style="margin:0">'+esc(r.t)+'</h2>'+
+      '<span class="rt-count" data-rcount="'+r.id+'">0 / '+n+'</span></div>'+
+      '<div class="hint" style="margin:4px 0 12px">'+esc(r.sub)+'</div>'+body+
+      '<button class="btn btn-sm btn-ghost" data-rreset="'+r.id+'" style="margin-top:6px">Reset</button></div>';
+  }).join("");
+  function count(id){var all=el.querySelectorAll('[data-rt="'+id+'"]'),on=el.querySelectorAll('[data-rt="'+id+'"].on');
+    el.querySelector('[data-rcount="'+id+'"]').textContent=on.length+' / '+all.length;}
+  el.querySelectorAll(".rt-row").forEach(function(b){b.onclick=function(){b.classList.toggle("on");count(b.dataset.rt);};});
+  el.querySelectorAll("[data-rreset]").forEach(function(b){b.onclick=function(){
+    el.querySelectorAll('[data-rt="'+b.dataset.rreset+'"].on').forEach(function(x){x.classList.remove("on");});count(b.dataset.rreset);};});
+}
+
 function renderPractice(){
+  renderRoutines();
   document.getElementById("wedBlocks").innerHTML=WED_BLOCKS.map(blockHTML).join("");
   document.getElementById("wkndBlocks").innerHTML=WKND_BLOCKS.map(blockHTML).join("");
   wireTicks(document.getElementById("wedBlocks"));
