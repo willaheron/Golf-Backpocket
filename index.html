@@ -281,6 +281,28 @@
   .cmp-t{text-align:center;font-size:15px;font-weight:600}
   .wclash{margin-top:10px;padding:10px 12px;border-radius:12px;background:var(--pill);border:1px solid var(--line);font-size:13.5px;line-height:1.45}
   .wprompt{margin-top:6px;padding:8px 10px;border-radius:10px;border:1px solid var(--dg-acc);font-size:13px;line-height:1.45}
+  .cc{font-size:14px;line-height:1.45}
+  .cc-intro{margin-bottom:12px}.cc-def{display:block;margin-top:6px;font-size:13px;color:var(--muted)}
+  .cc-step{font-size:15px;font-weight:700;margin:16px 0 8px;display:flex;flex-wrap:wrap;align-items:baseline;gap:6px}
+  .cc-n{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--dg-ink);color:var(--dg-paper);font-size:12.5px;font-weight:700}
+  .cc-arrow{color:var(--muted);font-weight:500}.cc-q{flex-basis:100%;font-size:12.5px;font-weight:500;color:var(--muted)}
+  .cc-grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.cc-grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .cc-tile{background:var(--pill);border:1px solid var(--line);border-radius:12px;padding:10px}
+  .cc-grid3 .cc-tt{font-size:22px;font-weight:300;letter-spacing:-.02em}.cc-tt{font-weight:700;font-size:15px;margin-bottom:3px}.cc-ts{font-size:12.5px;line-height:1.4}
+  .cc-tile.soft{border-color:color-mix(in srgb,var(--dg-acc) 50%,var(--line))}.cc-tile.firm{border-color:color-mix(in srgb,var(--dg-bad) 45%,var(--line))}
+  .cc-when{margin-top:6px;font-size:11.5px;color:var(--muted)}
+  .cc-over{margin-top:10px;font-size:13px;padding:8px 10px;border-radius:10px;border:1px dashed var(--line)}
+  .cc-list{border-top:1px solid var(--line-soft)}.cc-row{display:grid;grid-template-columns:110px 1fr;gap:10px;padding:7px 0;border-bottom:1px solid var(--line-soft);font-size:13px}.cc-k{font-weight:700}
+  .cc-rule{margin-top:14px;padding:12px;border-radius:12px;background:var(--pill);border-left:3px solid var(--dg-acc);font-size:13.5px}
+  .cc-rt{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+  .cc-trap{margin-top:8px;color:var(--dg-bad);font-weight:600}
+  .cc-sec{font-size:15px;font-weight:700;margin:20px 0 8px;padding-top:14px;border-top:1px solid var(--line)}
+  .cc-shots{display:grid;gap:8px}
+  .cc-shot{background:var(--pill);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+  .cc-shot.run{border-left:3px solid var(--dg-ink)}.cc-shot.fly{border-left:3px solid var(--dg-acc)}.cc-shot.float{border-left:3px solid color-mix(in srgb,var(--dg-acc) 50%,var(--dg-bad))}
+  .cc-sr{display:grid;grid-template-columns:62px 1fr;gap:8px;font-size:13px;padding:2px 0}.cc-sr span{color:var(--muted);font-weight:600}
+  .cc-link{display:block;margin:6px 0 2px;font-size:13.5px}
+  .cc-modal-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
   .hm-hist{font-size:13px;line-height:1.45;margin:-4px 0 12px}
   .srow.wrap{flex-wrap:wrap}
   .notice-card{border-left:3px solid var(--dg-acc)}
@@ -916,6 +938,7 @@ html:not([data-theme]){background:#edf1f6 !important}
       <button class="subtab" data-p="wed">Wednesday</button>
       <button class="subtab" data-p="home">Home</button>
       <button class="subtab" data-p="wknd">Weekend</button>
+      <button class="subtab" data-p="chip">Chip card</button>
       <button class="subtab" data-p="tm">Trackman</button>
       <button class="subtab" data-p="drills">Drills</button>
       <button class="subtab" data-p="long">Long clubs</button>
@@ -983,6 +1006,12 @@ html:not([data-theme]){background:#edf1f6 !important}
     <div class="sub-pane" id="p-drills">
       <div class="note">How to set up each drill. <span style="color:var(--dg-bad)">Dashed</span> = the swing you're fixing, <span style="color:var(--dg-acc)">solid blue</span> = the one you want.</div>
       <div id="drillList"></div>
+    </div>
+
+    <!-- CHIP CARD -->
+    <div class="sub-pane" id="p-chip">
+      <div class="pilltag">Short game · lie &amp; club card</div>
+      <div class="card" id="chipCardPane"></div>
     </div>
 
     <!-- WEEKEND -->
@@ -1720,7 +1749,7 @@ function caddyCard(geo,d,i){
   h.flags.forEach(function(f){notes.push(f[0].toUpperCase()+f.slice(1)+".");});
   if(geo.cd.draft&&(d.courseId!=="warringah"||h.n>=10))notes.push(geo.cd.draft);
   var hidden=!!D.mapHidden;
-  var out='<div class="card hmap"><div class="hm-head"><h2 style="margin:0">Caddy</h2><button class="linkbtn" id="mapToggle">'+(hidden?"Show map":"Hide map")+'</button></div>';
+  var out='<div class="card hmap"><div class="hm-head"><h2 style="margin:0">Caddy</h2><span><button class="linkbtn" data-chipcard style="margin-right:14px">Chip card</button><button class="linkbtn" id="mapToggle">'+(hidden?"Show map":"Hide map")+'</button></span></div>';
   if(p.tags.length)out+='<div class="chipwrap hm-tags">'+p.tags.map(function(t){return '<span class="chip-t" style="pointer-events:none">'+esc(t)+'</span>';}).join("")+'</div>';
   if(notes.length)out+='<div class="hm-note">'+notes.map(esc).join("<br>")+'</div>';
   out+='<div class="hm-ctl">'+(h.par===3?'<div class="hm-ctl-row"><span class="hm-ctl-l">Pin</span>'+[["F","Front"],["M","Middle"],["B","Back"]].map(function(x){return '<button class="fchip sm'+((st.pin||"M")===x[0]?' on':'')+'" data-pin="'+x[0]+'">'+x[1]+'</button>';}).join("")+'</div>':'')+
@@ -1938,6 +1967,47 @@ function updateBagDot(){
 }
 document.getElementById("bagNoticeBtn").addEventListener("click",function(){go("bag");renderSuggestions();});
 
+/* ---------------- SHORT-GAME LIE & CLUB CARD ---------------- */
+function chipCardHTML(full){
+  function tile(t,s,cls){return '<div class="cc-tile'+(cls?' '+cls:'')+'"><div class="cc-tt">'+t+'</div><div class="cc-ts">'+s+'</div></div>';}
+  function row(a,b){return '<div class="cc-row"><div class="cc-k">'+a+'</div><div class="cc-v">'+b+'</div></div>';}
+  return '<div class="cc">'+
+   '<div class="cc-intro">Run the three steps in order. <b>Distance picks the loft; the ground can override it.</b><br>'+
+   '<span class="cc-def"><b>Chip</b> = more ground than air: low, lands early, rolls. <b>Pitch</b> = more air than ground: high, carries, stops.</span></div>'+
+   '<div class="cc-step"><span class="cc-n">1</span>Distance <span class="cc-arrow">→</span> loft<div class="cc-q">How much green to the pin?</div></div>'+
+   '<div class="cc-grid3">'+tile("50°","Lots of green")+tile("54°","Medium")+tile("58°","Little · short-sided")+'</div>'+
+   '<div class="cc-step"><span class="cc-n">2</span>Ground <span class="cc-arrow">→</span> bounce + strike<div class="cc-q">This can override the loft.</div></div>'+
+   '<div class="cc-grid2">'+
+     tile("Soft","<b>54° · high bounce</b><br>Brush and sweep, don't dig, swing freely. Sitting up: clip the top of the grass, expect a flyer that runs.<div class=\"cc-when\">soft · wet · fluffy · sitting up</div>","soft")+
+     tile("Firm","<b>58° or 50° · low bounce</b><br>Square face, nip it, slide the edge under. <b>Never open the face.</b><div class=\"cc-when\">hard · bare · tight · down-grain · downhill · into-grain</div>","firm")+'</div>'+
+   '<div class="cc-over"><b>Override:</b> firm ground but distance said 54°? Drop to the 58° or 50°. If pin and lie agree (e.g. short pin + firm = 58°), you\'re already on the right club.</div>'+
+   '<div class="cc-step"><span class="cc-n">3</span>Stack<div class="cc-q">Only if present. Each one nudges club and flight.</div></div>'+
+   '<div class="cc-list">'+
+     row("Uphill","More club · swing up the slope · lands soft, stops")+
+     row("Downhill","Low bounce · follow the slope down · low runner, never high bounce")+
+     row("Into grain","More club · commit and accelerate (it grabs) · comes out lower, shorter")+
+     row("Down grain","Less club · sits clean · comes out hot, runs")+
+     row("Ball above feet","Flies left: aim right · choke down · smoother swing")+
+     row("Ball below feet","Flies right: aim left · extra knee flex · stay down through it")+'</div>'+
+   '<div class="cc-rule"><div class="cc-rt">The one rule</div>Shallow is the default everywhere: firm demands it, soft forgives a steeper hit. Match bounce to the give: <b>soft wants bounce, firm wants the edge under.</b>'+
+   '<div class="cc-trap">The trap: don\'t open the face on firm, downhill or into-grain ground. It adds bounce and skips the edge into a thin.</div></div>'+
+   (full?chipTechniqueHTML():'')+
+  '</div>';
+}
+function chipTechniqueHTML(){
+  function c(t,rows,cls){return '<div class="cc-shot'+(cls?' '+cls:'')+'"><div class="cc-tt">'+t+'</div>'+rows.map(function(r){return '<div class="cc-sr"><span>'+r[0]+'</span>'+r[1]+'</div>';}).join("")+'</div>';}
+  return '<div class="cc-sec">Same 54°, three shots</div>'+
+   '<div class="cc-q" style="margin:-4px 0 10px">Shown with the 54°, but it works the same with every wedge. Ball position, shaft lean and how much the wrists work turn one club into three shots; the 50° rolls more and the 58° stops quicker.</div>'+
+   '<div class="cc-shots">'+
+    c("Low runner (chip)",[["Ball","back: off the back-foot instep"],["Shaft","leaning forward, hands ahead (plays like a 48–50°)"],["Weight","60–70% lead side, stays there"],["Stance","narrow, slightly open"],["Wrists","quiet: a putting stroke with a little hinge"],["Result","low, little spin, lands early and rolls"]],"run")+
+    c("Standard pitch",[["Ball","centre"],["Shaft","near vertical, hands over the ball: full 54°"],["Weight","balanced, about 55% lead"],["Stance","a little wider, slightly open"],["Wrists","hinge freely, swing and accelerate; follow-through length sets distance"],["Result","higher, more spin, carries most of the way, stops"]],"fly")+
+    c("High floater",[["Ball","a touch forward"],["Shaft","neutral, face slightly open"],["Weight","balanced"],["Stance","wider, open"],["Wrists","full hinge, long soft swing, keep the clubhead moving"],["Result","highest, softest landing. Soft or good lies only: never off firm, tight or downhill ground"]],"float")+
+   '</div>'+
+   '<div class="cc-rule" style="margin-top:12px"><div class="cc-rt">The two feels</div><b>Chip:</b> lean the shaft forward, kill the wrists. <b>Pitch:</b> stand the shaft up, let the wrists work.'+
+   '<div class="cc-trap">The trap: don\'t help the pitch up by hanging back and flipping the hands. That scoop causes the thins and chunks. The loft and an accelerating swing make the height.</div></div>';
+}
+function openChipCard(){openModal('<div class="cc-modal-h"><h3 style="margin:0">Chip card</h3><button class="linkbtn" onclick="closeModal()">Close</button></div>'+chipCardHTML());}
+
 /* ---------------- ROUND FLOW ---------------- */
 var RF={setup:null};
 function g(a,i){return a&&a[i]!=null?a[i]:null;}
@@ -2137,7 +2207,7 @@ function renderHole(){
   }
   h+='<div class="lab">Green in reg</div><div class="statline">'+yn("gir",st.gir)+
     (par===3?'<div class="miss'+(st.gir===false?' on':'')+'">'+mb("gm","L","Left",st.girMiss)+mb("gm","R","Right",st.girMiss)+mb("gm","S","Short",st.girMiss)+mb("gm","G","Long",st.girMiss)+'</div>':'')+
-    '</div>'+(par===3&&st.gir===false?tpRow(st):'');
+    '</div>'+(st.gir===false?'<button class="linkbtn cc-link" data-chipcard>Chip card ›</button>':'')+(par===3&&st.gir===false?tpRow(st):'');
   if(par>=4&&st.gir===false){
     h+='<div class="lab">Approach</div><div class="statline"><div class="miss on">'+
       '<button class="sb'+(st.appOn===true?' on':'')+'" data-ao="1">On green</button>'+
@@ -2152,6 +2222,7 @@ function renderHole(){
   window.__lastHoleIdx=i;
   if(sameHole){window.scrollTo(0,keepY); requestAnimationFrame(function(){ if(window.__lastHoleIdx===i) window.scrollTo(0,keepY); });}
 
+  document.querySelectorAll("#pBody [data-chipcard]").forEach(function(b){b.onclick=openChipCard;});
   if(geo&&geo.h)wireCaddy(geo);
   else if(geo){var stz=D.draft.state[D.draft.idx]; document.querySelectorAll("#pBody [data-pin]").forEach(function(b){b.onclick=function(){stz.pin=b.dataset.pin==="M"?null:b.dataset.pin;save();renderHole();};});}
   document.getElementById("pPrev").disabled=(i===0);
@@ -2613,8 +2684,11 @@ var WED_BLOCKS=[
     dd:["Trackman target: <b>face angle within ±2°</b>.","Path is secondary on driver for now; it improves as the irons do."]}
 ];
 var WKND_BLOCKS=[
-  {id:"wk-chip",t:"Chipping",d:"Open the face to expose the bounce, weight forward throughout — the corrected technique that suits your SM9 grinds. Land spot, not the hole.",n:"20 min",
-    dd:["50° F grind: full approach workhorse.","54° D grind: stock pitches and approaches — your bread and butter.","58° M grind: creativity, bunkers, flops with the open face."]},
+  {id:"wk-chip",t:"Chipping: chip vs pitch, three clubs",d:"Same technique, different clubs. Chip: ball back, hands forward, quiet wrists, runs. Pitch: ball centre, shaft up, wrists hinge, flies and stops. Learn how far each wedge rolls, then let the Chip card pick the club. Pick a landing spot for every ball.",n:"40",
+    dd:["<b>8 chips, 54°</b>: ball off the back-foot instep, hands ahead, weight 60–70% lead, putting-style stroke. Land it about a third of the way and let it roll.",
+        "<b>8 pitches, 54°</b>: ball centre, shaft near vertical, wrists hinge, accelerate through. Land it about two-thirds of the way. Follow-through length sets the distance; never flick.",
+        "<b>12 same spot, three clubs</b>: chip to one landing spot with the 50°, then the 54°, then the 58°, four rounds. Watch how far each rolls out (roughly 1:2, 1:1½, 1:1 air to roll as a start). Learn your own numbers.",
+        "<b>12 random, scored</b>: drop balls round the green on different lies (firm, fluffy, uphill, downhill, short-sided). Read each with the Chip card, choose chip or pitch <b>and</b> the club, then hit it. Never the same shot twice in a row. Count up-and-downs out of 12."]},
   {id:"wk-wedge",t:"Wedge distance ladder",d:"Calibrate carries for 50 / 54 / 58 at full and part swings. Build the scoring grid you can trust on the course.",n:"20 min",
     dd:["Hit a set from each wedge, note the carry on the Trackman.","Add clock-face part-swings (7:30, 9:00, 10:30) once full carries are solid."]},
   {id:"wk-bunker",t:"Bunkers",d:"58° M grind, open face, splash the sand not the ball. Consistent entry point and a full finish.",n:"15 min"},
@@ -2757,6 +2831,7 @@ function wireTicks(root){
   });
 }
 /* practice sub-tabs */
+(function(){var cp=document.getElementById("chipCardPane"); if(cp)cp.innerHTML=chipCardHTML(true);})();
 document.getElementById("pracTabs").addEventListener("click",function(e){
   var b=e.target.closest(".subtab");if(!b)return;
   this.querySelectorAll(".subtab").forEach(function(x){x.classList.toggle("on",x===b);});
