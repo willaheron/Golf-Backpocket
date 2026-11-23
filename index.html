@@ -1913,6 +1913,7 @@ function keepAwake(){try{if(navigator.wakeLock&&!wakeLock)navigator.wakeLock.req
 document.addEventListener("visibilitychange",function(){if(document.visibilityState==="visible"&&document.body.classList.contains("playing"))keepAwake();});
 function openPlay(){go("rounds");showRView("rPlay");renderHole();keepAwake();}
 function renderHole(){
+  var keepY=window.scrollY||window.pageYOffset||0, sameHole=(window.__lastHoleIdx===(D.draft&&D.draft.idx));
   var d=D.draft,i=d.idx,n=d.holeNums[i],par=d.pars[i],st=d.state[i],t=draftTotals(),last=i===d.holeNums.length-1, geo=holeGeo(d,i);
   var c=courseById(d.courseId), lap=(c&&c.holes===9&&i>=9)?' · 2nd nine':'';
   document.getElementById("pCourse").textContent=d.courseName;
@@ -1954,6 +1955,8 @@ function renderHole(){
   var pn="";[[0,"None"],[1,"1"],[2,"2"],[3,"3+"]].forEach(function(x){pn+='<button class="sb'+(st.pen===x[0]?' on':'')+'" data-pen="'+x[0]+'">'+x[1]+'</button>';});
   h+='<div class="lab">Penalty strokes · OB, water, unplayable</div><div class="srow">'+pn+'</div></div>';
   var body=document.getElementById("pBody"); body.innerHTML=h;
+  window.__lastHoleIdx=i;
+  if(sameHole){window.scrollTo(0,keepY); requestAnimationFrame(function(){ if(window.__lastHoleIdx===i) window.scrollTo(0,keepY); });}
 
   if(geo&&geo.h)wireCaddy(geo);
   document.getElementById("pPrev").disabled=(i===0);
