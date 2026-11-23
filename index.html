@@ -1711,7 +1711,7 @@ function caddyCard(geo,d,i){
   var h=geo.h, key=geo.key, trouble=D.trouble[key]||[], my=D.myClub[key]||null;
   var cz=((geo.cd.zones||{})[String(h.n)]||[]).map(function(z){var st=z.s!=null?z.s:h.len-z.sg, en=z.e!=null?z.e:h.len-z.eg;
     return {type:z.type,side:z.side,start:Math.max(0,Math.round(st)),end:Math.round(en),off:z.off||0,club:true};}).filter(function(z){return z.end>z.start+10;});
-  var st=d.state[i], WI=holeWindInfo(d,i,geo), pinOff=pinOffset(h,st.pin);
+  var st=d.state[i], WI=holeWindInfo(d,i,geo), pinOff=h.par===3?pinOffset(h,st.pin):0;
   var popts={trouble:cz.concat(trouble),myClub:my,rules:(geo.cd.rules||{})[String(h.n)],windPct:WI.pct,pinOff:pinOff};
   var p=planHole(h,popts), hist=null, bump=0;
   if(h.par===3){hist=p3History(d.courseId,d.teeBox.name,h.n); bump=p3Bump(hist,p.auto3,WI.str);
@@ -1723,7 +1723,7 @@ function caddyCard(geo,d,i){
   var out='<div class="card hmap"><div class="hm-head"><h2 style="margin:0">Caddy</h2><button class="linkbtn" id="mapToggle">'+(hidden?"Show map":"Hide map")+'</button></div>';
   if(p.tags.length)out+='<div class="chipwrap hm-tags">'+p.tags.map(function(t){return '<span class="chip-t" style="pointer-events:none">'+esc(t)+'</span>';}).join("")+'</div>';
   if(notes.length)out+='<div class="hm-note">'+notes.map(esc).join("<br>")+'</div>';
-  out+='<div class="hm-ctl"><div class="hm-ctl-row"><span class="hm-ctl-l">Pin</span>'+[["F","Front"],["M","Middle"],["B","Back"]].map(function(x){return '<button class="fchip sm'+((st.pin||"M")===x[0]?' on':'')+'" data-pin="'+x[0]+'">'+x[1]+'</button>';}).join("")+'</div>'+
+  out+='<div class="hm-ctl">'+(h.par===3?'<div class="hm-ctl-row"><span class="hm-ctl-l">Pin</span>'+[["F","Front"],["M","Middle"],["B","Back"]].map(function(x){return '<button class="fchip sm'+((st.pin||"M")===x[0]?' on':'')+'" data-pin="'+x[0]+'">'+x[1]+'</button>';}).join("")+'</div>':'')+
     '<div class="hm-ctl-row"><span class="hm-ctl-l">Wind</span><span class="hm-wind">'+esc(WI.txt||"Calm")+'</span></div>'+
     (d.windPrompt?'<div class="wprompt">Wind has '+(({calm:0,light:1,strong:2})[d.windPrompt.str]>({calm:0,light:1,strong:2})[d.wind.str]?'picked up':(({calm:0,light:1,strong:2})[d.windPrompt.str]<({calm:0,light:1,strong:2})[d.wind.str]?'dropped':'shifted'))+': now '+d.windPrompt.str+(d.windPrompt.str!=="calm"?' from the '+d.windPrompt.from:'')+' ('+d.windPrompt.sp+' km/h'+(d.windPrompt.gu?', gusting '+d.windPrompt.gu:'')+').'+
       '<div class="btn-row" style="margin-top:6px"><button class="btn btn-sm btn-pri" data-wup="1">Update</button><button class="btn btn-sm btn-ghost" data-wup="0">Ignore</button></div></div>':'')+
@@ -1795,7 +1795,7 @@ function liteCard(geo,d,i){
   }
   var out='<div class="card hmap"><div class="hm-head"><h2 style="margin:0">Caddy</h2><span class="hint" style="margin:0">No map for this course yet</span></div>';
   if(note)out+='<div class="hm-clubnote">'+esc(note)+'</div>';
-  out+='<div class="hm-ctl"><div class="hm-ctl-row"><span class="hm-ctl-l">Pin</span>'+[["F","Front"],["M","Middle"],["B","Back"]].map(function(x){return '<button class="fchip sm'+((stL.pin||"M")===x[0]?' on':'')+'" data-pin="'+x[0]+'">'+x[1]+'</button>';}).join("")+'</div></div>';
+  if(par===3)out+='<div class="hm-ctl"><div class="hm-ctl-row"><span class="hm-ctl-l">Pin</span>'+[["F","Front"],["M","Middle"],["B","Back"]].map(function(x){return '<button class="fchip sm'+((stL.pin||"M")===x[0]?' on':'')+'" data-pin="'+x[0]+'">'+x[1]+'</button>';}).join("")+'</div></div>';
   out+='<div class="hm-plan">'+rows.map(function(r){return '<div class="prow"><div class="pic">'+CICON[r[0]]+'</div><div><div class="pk">'+r[1]+'</div><div class="pv">'+r[2]+'</div></div></div>';}).join("")+'</div>';
   out+='<div class="hint" style="margin-top:2px">Distance-only plan from the card and your carries. Hazards aren\'t known without a map, so use your eyes.</div></div>';
   return out;
