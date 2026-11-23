@@ -238,6 +238,9 @@
   .rt-row.on .rt-box{background:var(--green);border-color:var(--green)}
   .rt-row.on .rt-box:after{content:"✓";color:var(--on-primary);font-size:13px;font-weight:800}
   .rt-row.on .rt-txt{color:var(--ink-soft)}
+  .round{cursor:pointer}
+  .round:active{opacity:.7}
+  .round-chev{flex:0 0 auto;color:var(--muted);font-size:22px;line-height:1;margin-left:2px}
   .caddy-p{font-size:15px;line-height:1.6;color:var(--ink)}
   .caddy-d{margin-top:8px}
   .directive b{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
@@ -800,6 +803,16 @@ html:not([data-theme]){background:#edf1f6 !important}
       </div>
     </div>
 
+    <!-- round summary -->
+    <div id="rSummary" style="display:none">
+      <div class="play-top">
+        <button class="iconbtn" id="sBack">Back</button>
+        <div class="pt-mid"><div class="pt-course" id="sCourse"></div><div class="pt-sub" id="sSub"></div></div>
+        <button class="iconbtn" id="sEdit">Edit</button>
+      </div>
+      <div id="rSummaryBody"></div>
+    </div>
+
     <!-- finish -->
     <div id="rFinish" style="display:none">
       <div class="play-top">
@@ -866,7 +879,7 @@ html:not([data-theme]){background:#edf1f6 !important}
 
     <!-- HOME -->
     <div class="sub-pane" id="p-home">
-      <div class="pilltag">Home · 10–13 minutes · 4–5 days a week</div>
+      <div class="pilltag">Home · 12–15 minutes · 4–5 days a week</div>
       <div class="note">Built for a small room, no ball. Slow reps genuinely rewire movement patterns, as long as every rep is exact. Film from behind once a week to check.</div>
       <div id="homeBlocks"></div>
     </div>
@@ -1432,8 +1445,8 @@ function modeLabel(m,nums){
   return nums.length+" hole"+(nums.length===1?"":"s")+" from "+nums[0];
 }
 function showRView(id){
-  ["roundsHome","rSetup","rPlay","rFinish"].forEach(function(v){document.getElementById(v).style.display=(v===id?"block":"none");});
-  document.body.classList.toggle("playing",id!=="roundsHome");
+  ["roundsHome","rSetup","rPlay","rFinish","rSummary"].forEach(function(v){document.getElementById(v).style.display=(v===id?"block":"none");});
+  document.body.classList.toggle("playing",id==="rSetup"||id==="rPlay"||id==="rFinish");
   window.scrollTo(0,0);
 }
 function showRoundsHome(){
@@ -1522,7 +1535,7 @@ function renderSetup(){
     var t=b.dataset.feel,k=s.feels.indexOf(t); if(k>=0)s.feels.splice(k,1); else if(s.feels.length<3)s.feels.push(t); renderSetup();};});
   document.getElementById("suStart").onclick=startRound;
 }
-function blankHole(){return {score:null,putts:null,fir:null,gir:null,tee:null,firMiss:null,girMiss:null,pen:null,teePen:null};}
+function blankHole(){return {score:null,putts:null,fir:null,gir:null,tee:null,firMiss:null,girMiss:null,pen:null,teePen:null,appOn:null};}
 function startRound(){
   var s=RF.setup, c=courseById(s.courseId);
   if(s.courseId==="__other"&&!s.courseName.trim()){document.getElementById("suMsg").textContent="Give the course a name first.";return;}
@@ -1539,7 +1552,7 @@ function editRound(r){
     D.draft={editId:r.id,date:r.date,courseId:r.courseId,courseName:r.courseName||(courseById(r.courseId)||{}).name||"",
       teeBox:r.teeBox||null,mode:r.mode||"18",start:nums[0],count:nums.length,holeNums:nums.slice(),
       pars:(r.pars||nums.map(function(){return 4;})).slice(),
-      state:nums.map(function(n,i){return {score:g(r.scores,i),putts:g(r.putts,i),fir:g(r.fir,i),gir:g(r.gir,i),tee:g(r.tee,i),firMiss:g(r.firMiss,i),girMiss:g(r.girMiss,i),pen:g(r.pen,i),teePen:g(r.teePen,i)};}),
+      state:nums.map(function(n,i){return {score:g(r.scores,i),putts:g(r.putts,i),fir:g(r.fir,i),gir:g(r.gir,i),tee:g(r.tee,i),firMiss:g(r.firMiss,i),girMiss:g(r.girMiss,i),pen:g(r.pen,i),teePen:g(r.teePen,i),appOn:g(r.appOn,i)};}),
       idx:0,feels:(r.feels||[]).slice(),leaks:(r.leaks||[]).slice(),notes:r.notes||""};
     save(); openPlay();
   }
@@ -1584,9 +1597,14 @@ function renderHole(){
       '<div class="miss'+(st.fir===false?' on':'')+'">'+mb("fm","L","Left",st.firMiss)+mb("fm","R","Right",st.firMiss)+'</div></div>'+
       (st.fir===false?tpRow(st):'');
   }
-  h+='<div class="lab">Green</div><div class="statline">'+yn("gir",st.gir)+
-    '<div class="miss'+(st.gir===false?' on':'')+'">'+mb("gm","L","Left",st.girMiss)+mb("gm","R","Right",st.girMiss)+mb("gm","S","Short",st.girMiss)+mb("gm","G","Long",st.girMiss)+'</div></div>'+
-    (par===3&&st.gir===false?tpRow(st):'');
+  h+='<div class="lab">Green in reg</div><div class="statline">'+yn("gir",st.gir)+
+    (par===3?'<div class="miss'+(st.gir===false?' on':'')+'">'+mb("gm","L","Left",st.girMiss)+mb("gm","R","Right",st.girMiss)+mb("gm","S","Short",st.girMiss)+mb("gm","G","Long",st.girMiss)+'</div>':'')+
+    '</div>'+(par===3&&st.gir===false?tpRow(st):'');
+  if(par>=4&&st.gir===false){
+    h+='<div class="lab">Approach</div><div class="statline"><div class="miss on">'+
+      '<button class="sb'+(st.appOn===true?' on':'')+'" data-ao="1">On green</button>'+
+      mb("gm","L","Left",st.girMiss)+mb("gm","R","Right",st.girMiss)+mb("gm","S","Short",st.girMiss)+mb("gm","G","Long",st.girMiss)+'</div></div>';
+  }
   var pb="";for(var p=0;p<=5;p++)pb+='<button class="sb'+(st.putts===p?' on':'')+'" data-p="'+p+'">'+p+'</button>';
   h+='<div class="lab">Putts</div><div class="srow">'+pb+'</div>';
   var pn="";[[0,"None"],[1,"1"],[2,"2"],[3,"3+"]].forEach(function(x){pn+='<button class="sb'+(st.pen===x[0]?' on':'')+'" data-pen="'+x[0]+'">'+x[1]+'</button>';});
@@ -1597,6 +1615,9 @@ function renderHole(){
   var nx=document.getElementById("pNext"); nx.textContent=last?"Finish round":"Next hole";
 
   function set(k,v){st[k]=(st[k]===v?null:v); if(k==="fir"&&st.fir!==false)st.firMiss=null; if(k==="gir"&&st.gir!==false)st.girMiss=null;
+    if(st.gir!==false||par<4)st.appOn=null;
+    if(k==="appOn"&&st.appOn===true)st.girMiss=null;
+    if(k==="girMiss"&&par>=4)st.appOn=st.girMiss?false:null;
     if(!(par>=4?st.fir===false:st.gir===false))st.teePen=null;
     if(k==="teePen"&&st.teePen===true&&!(st.pen>=1))st.pen=1;
     if(k==="pen"&&st.pen===0&&st.teePen===true)st.teePen=false;
@@ -1607,6 +1628,7 @@ function renderHole(){
   body.querySelectorAll("[data-tee]").forEach(function(b){b.onclick=function(){set("tee",b.dataset.tee);};});
   body.querySelectorAll("[data-yn]").forEach(function(b){b.onclick=function(){set(b.dataset.yn,b.dataset.v==="1");};});
   body.querySelectorAll("[data-tp]").forEach(function(b){b.onclick=function(){set("teePen",b.dataset.tp==="1");};});
+  body.querySelectorAll("[data-ao]").forEach(function(b){b.onclick=function(){set("appOn",b.dataset.ao==="1");};});
   body.querySelectorAll("[data-fm]").forEach(function(b){b.onclick=function(){set("firMiss",b.dataset.fm);};});
   body.querySelectorAll("[data-gm]").forEach(function(b){b.onclick=function(){set("girMiss",b.dataset.gm);};});
   body.querySelectorAll("[data-setpar]").forEach(function(b){b.onclick=function(){d.pars[i]=+b.dataset.setpar;save();renderHole();};});
@@ -1651,8 +1673,8 @@ document.getElementById("pCard").addEventListener("click",function(){
   document.getElementById("cardClose").onclick=closeModal;
   document.querySelectorAll("#modal [data-row]").forEach(function(r){r.onclick=function(){D.draft.idx=+r.dataset.row;save();closeModal();renderHole();window.scrollTo(0,0);};});
 });
-function cardTable(tappable){
-  var d=D.draft, rows="", chunk=0;
+function cardTable(tappable,dd){
+  var d=dd||D.draft, rows="", chunk=0;
   function sub(from,to,label){
     var p=0,s=0,pu=0,any=false,anyP=false;
     for(var k=from;k<to;k++){p+=d.pars[k];var h=d.state[k];if(h.score!=null){s+=h.score;any=true;}if(h.putts!=null){pu+=h.putts;anyP=true;}}
@@ -1674,7 +1696,7 @@ function listJoin(a){return a.length<2?a.join(""):a.slice(0,-1).join(", ")+" and
 function roundToCaddy(r){
   var nums=r.holeNums||(r.scores||[]).map(function(_,i){return i+1;});
   return {pars:r.pars||nums.map(function(){return 4;}),holeNums:nums,
-    state:nums.map(function(n,i){return {score:g(r.scores,i),putts:g(r.putts,i),fir:g(r.fir,i),gir:g(r.gir,i),tee:g(r.tee,i),firMiss:g(r.firMiss,i),girMiss:g(r.girMiss,i),pen:g(r.pen,i),teePen:g(r.teePen,i)};})};
+    state:nums.map(function(n,i){return {score:g(r.scores,i),putts:g(r.putts,i),fir:g(r.fir,i),gir:g(r.gir,i),tee:g(r.tee,i),firMiss:g(r.firMiss,i),girMiss:g(r.girMiss,i),pen:g(r.pen,i),teePen:g(r.teePen,i),appOn:g(r.appOn,i)};})};
 }
 function caddyRead(c){
   var MISS={S:"short",G:"long",L:"left",R:"right"};
@@ -1689,7 +1711,8 @@ function caddyRead(c){
       S.fe++; if(h.fir)S.fh++; else{if(h.firMiss==="L")S.fL++;if(h.firMiss==="R")S.fR++;}
       if(h.tee){var k=S.clubs[h.tee]=S.clubs[h.tee]||{n:0,h:0,L:0,R:0,tp:0};k.n++;if(h.fir)k.h++;else if(h.firMiss)k[h.firMiss]++;if(h.teePen)k.tp++;}
     }
-    if(h.gir!=null){S.ge++; if(h.gir)S.gh++; else{ if(h.girMiss){S.gm[h.girMiss]++;S.gmN++;} S.uc++; if(h.score<=par)S.ud++; }}
+    if(h.gir!=null){S.ge++; if(h.gir)S.gh++; else{ if(h.girMiss){S.gm[h.girMiss]++;S.gmN++;} S.uc++; if(h.score<=par)S.ud++;
+      if(par>=4&&h.appOn!=null){S.rc=(S.rc||0)+1; if(h.appOn)S.rh=(S.rh||0)+1;} }}
     var hp=h.pen||0, tp=h.teePen?1:0;
     if(tp){S.tpen++;S.tpenH.push({n:n,club:h.tee,side:par>=4?h.firMiss:h.girMiss,par3:par===3});}
     if(hp>tp){S.open+=hp-tp;S.openH.push(n);}
@@ -1722,8 +1745,9 @@ function caddyRead(c){
   if(S.open)out.push(S.open+" penalty stroke"+(S.open>1?"s":"")+" came after the tee shot (the "+listJoin(S.openH.map(ordinal))+").");
   /* approach */
   if(S.ge){
-    var a="Approach: "+S.gh+" of "+S.ge+" greens";
-    if(S.gmN){var ps=[];["S","G","L","R"].forEach(function(k){if(S.gm[k])ps.push(S.gm[k]+" "+MISS[k]);});a+=", missed "+listJoin(ps);}
+    var a="Approach: "+S.gh+" of "+S.ge+" greens in reg";
+    if(S.rc)a+="; when out of position, "+(S.rh||0)+" of "+S.rc+" approach"+(S.rc>1?"es":"")+" still found the green";
+    if(S.gmN){var ps=[];["S","G","L","R"].forEach(function(k){if(S.gm[k])ps.push(S.gm[k]+" "+MISS[k]);});a+=". Approach misses: "+listJoin(ps);}
     out.push(a+".");
   }
   /* big numbers */
@@ -1791,7 +1815,7 @@ function saveDraftRound(){
   d.state.forEach(function(h,i){if(h.score!=null){gross+=h.score;parSum+=d.pars[i];played++;}});
   var round={id:d.editId||("r"+Date.now()),date:d.date,mode:d.mode,start:d.start,count:d.holeNums.length,
     holeNums:d.holeNums.slice(),holes:played,courseId:d.courseId,courseName:d.courseName,teeBox:d.teeBox,
-    scores:col("score"),putts:col("putts"),fir:col("fir"),gir:col("gir"),tee:col("tee"),firMiss:col("firMiss"),girMiss:col("girMiss"),pen:col("pen"),teePen:col("teePen"),
+    scores:col("score"),putts:col("putts"),fir:col("fir"),gir:col("gir"),tee:col("tee"),firMiss:col("firMiss"),girMiss:col("girMiss"),pen:col("pen"),teePen:col("teePen"),appOn:col("appOn"),
     pars:d.pars.slice(),gross:gross,toPar:gross-parSum,feels:d.feels.slice(),leaks:d.leaks.slice(),notes:(d.notes||"").trim()};
   var c=courseById(d.courseId);
   if(c&&d.courseId!=="__other"){
@@ -1932,7 +1956,7 @@ function buildClaudeExport(range){
       bits.push("H"+n+" P"+par+": "+s);
       if(r.tee&&r.tee[i])bits.push(teeName(r.tee[i]));
       if(r.fir&&r.fir[i]!=null)bits.push(r.fir[i]?"FW hit":"FW miss"+(r.firMiss&&r.firMiss[i]?" "+miss[r.firMiss[i]]:""));
-      if(r.gir&&r.gir[i]!=null)bits.push(r.gir[i]?"GIR":"GIR miss"+(r.girMiss&&r.girMiss[i]?" "+miss[r.girMiss[i]]:""));
+      if(r.gir&&r.gir[i]!=null)bits.push(r.gir[i]?"GIR":"GIR miss"+(r.appOn&&r.appOn[i]===true?" (approach found green)":r.appOn&&r.appOn[i]===false?" (approach missed":"")+(r.girMiss&&r.girMiss[i]?" "+miss[r.girMiss[i]]:"")+(r.appOn&&r.appOn[i]===false?")":""));
       if(r.putts&&r.putts[i]!=null)bits.push(r.putts[i]+" putt"+(r.putts[i]===1?"":"s"));
       if(r.pen&&r.pen[i])bits.push(r.pen[i]+" penalty"+(r.teePen&&r.teePen[i]?" (tee shot)":""));
       L.push(bits.join(" · "));
@@ -1983,33 +2007,49 @@ function renderRoundList(){
     var ge_=goalEval(roundToCaddy(r)),gm_=ge_.filter(function(x){return x.hit!=null;});
     if(gm_.length)sub.push(ge_.filter(function(x){return x.hit===true;}).length+"/"+gm_.length+" goals");
     var name=r.courseId==="__other"?r.courseName:(courseById(r.courseId)?courseById(r.courseId).name:r.courseName);
-    return '<div class="round" data-rid="'+r.id+'">'+
+    return '<div class="round" data-rid="'+r.id+'" role="button" tabindex="0">'+
       '<div class="round-top">'+
         '<span class="round-date">'+esc(fmtDate(r.date))+'</span>'+
         '<span class="round-course">'+esc(name||"—")+'</span>'+
         '<span class="score-pill">'+r.gross+' <small style="font-weight:600;opacity:.8">'+toParStr(r.toPar)+'</small></span>'+
+        '<span class="round-chev">›</span>'+
       '</div>'+
       '<div class="round-sub">'+sub.map(esc).join(" · ")+'</div>'+
-      (r.feels&&r.feels.length?'<div class="round-sub" style="margin-top:5px">Feels: '+r.feels.map(esc).join(' · ')+'</div>':'')+
-      (r.leaks&&r.leaks.length?'<div class="round-sub" style="margin-top:3px">Leaked: '+r.leaks.map(esc).join(', ')+'</div>':'')+
-      (r.notes?'<div class="round-notes">'+esc(r.notes)+'</div>':'')+
-      (function(){var cr=caddyRead(roundToCaddy(r)); return cr?'<details class="caddy-d"><summary>Caddy\'s read</summary><p class="caddy-p" style="font-size:14px;margin-top:6px">'+esc(cr.story)+'</p><div class="directive"><b>Work on</b>'+esc(cr.take).replace(/\n/g,"<br>")+'</div></details>':'';})()+
-      '<div style="margin-top:9px;display:flex;gap:8px"><button class="btn btn-sm btn-ghost" data-edit="'+r.id+'">Edit</button>'+
-        '<button class="btn btn-sm btn-danger" data-del="'+r.id+'">Delete</button></div>'+
       '</div>';
   }).join("");
-  el.querySelectorAll("[data-edit]").forEach(function(b){
-    b.onclick=function(){var r=D.rounds.filter(function(x){return x.id===b.dataset.edit;})[0]; if(r)editRound(r);};
-  });
-  el.querySelectorAll("[data-del]").forEach(function(b){
-    b.onclick=function(){
-      openConfirm("Delete this round?",function(){
-        D.rounds=D.rounds.filter(function(x){return x.id!==b.dataset.del;});
-        save(); renderStats(); renderRoundList(); renderToday();
-      });
-    };
-  });
+  el.querySelectorAll("[data-rid]").forEach(function(row){row.onclick=function(){openRoundSummary(row.dataset.rid);};});
 }
+
+/* ---- saved round summary ---- */
+var SUM_ID=null;
+function openRoundSummary(id){
+  var r=D.rounds.filter(function(x){return x.id===id;})[0]; if(!r)return;
+  SUM_ID=id; showRView("rSummary");
+  var c=roundToCaddy(r), d={pars:c.pars,holeNums:c.holeNums,state:c.state};
+  var name=r.courseId==="__other"?r.courseName:(courseById(r.courseId)?courseById(r.courseId).name:r.courseName);
+  var holesTxt=r.holeNums?(r.holeNums.length===18?"18 holes":(r.mode==="front"?"Front 9":r.mode==="back"?"Back 9":r.holeNums.length+" holes")):(r.holes||18)+" holes";
+  document.getElementById("sCourse").textContent=name||"Round";
+  document.getElementById("sSub").textContent=fmtDate(r.date)+(r.teeBox&&r.teeBox.name?" · "+r.teeBox.name+" tees":"");
+  var h='<div class="hole-hero fin"><div><div class="hh-lab">'+esc(name||"")+'</div><div class="hh-num">'+r.gross+'</div>'+
+    '<div class="hh-of">'+toParStr(r.toPar)+' · '+esc(holesTxt)+' · '+esc(fmtDate(r.date))+'</div></div></div>';
+  h+='<div class="card">'+goalGrid(goalEval(d))+'</div>';
+  var cr=caddyRead({pars:d.pars,holeNums:d.holeNums,state:d.state});
+  if(cr)h+='<div class="card"><h2>Caddy\'s read</h2><p class="caddy-p">'+esc(cr.story)+'</p><div class="directive"><b>Work on</b>'+esc(cr.take).replace(/\n/g,"<br>")+'</div></div>';
+  h+='<div class="card"><h2>Scorecard</h2>'+cardTable(false,d)+'</div>';
+  if((r.feels&&r.feels.length)||(r.leaks&&r.leaks.length)||r.notes){
+    h+='<div class="card"><h2>Your debrief</h2>'+
+      (r.feels&&r.feels.length?'<p class="kv"><b>Swing thoughts</b> <span>— '+r.feels.map(esc).join(' · ')+'</span></p>':'')+
+      (r.leaks&&r.leaks.length?'<p class="kv"><b>Shots leaked</b> <span>— '+r.leaks.map(esc).join(', ')+'</span></p>':'')+
+      (r.notes?'<div class="round-notes">'+esc(r.notes)+'</div>':'')+'</div>';
+  }
+  h+='<div class="btn-row" style="margin-bottom:8px"><button class="btn" id="sEdit2">Edit round</button><button class="btn btn-danger" id="sDel">Delete</button></div>';
+  document.getElementById("rSummaryBody").innerHTML=h;
+  document.getElementById("sEdit2").onclick=function(){editRound(r);};
+  document.getElementById("sDel").onclick=function(){openConfirm("Delete this round?",function(){
+    D.rounds=D.rounds.filter(function(x){return x.id!==id;}); save(); showRoundsHome(); renderToday();});};
+}
+document.getElementById("sBack").addEventListener("click",showRoundsHome);
+document.getElementById("sEdit").addEventListener("click",function(){var r=D.rounds.filter(function(x){return x.id===SUM_ID;})[0]; if(r)editRound(r);});
 
 /* ---------------- PRACTICE content ---------------- */
 var WED_BLOCKS=[
@@ -2037,6 +2077,7 @@ var WKND_BLOCKS=[
 var HOME_BLOCKS=[
   {id:"hm-chair",t:"Chair drill",d:"No club: arms crossed over your chest, golf posture, backside touching a chair or wall. Turn back and through slowly, keeping it touching. Stops early extension and falling back.",n:"3 min"},
   {id:"hm-pump",t:"Slow-motion pump drill",d:"Filmed from behind on your phone. Trail elbow drops to the hip, club falls in behind you. Ten exact reps beat fifty sloppy ones.",n:"3 min"},
+  {id:"hm-block",t:"Drag the block down",d:"Trail hand only, holding a foam block or thick book. Alignment stick leaning on a chair or wall on your swing plane. From the top, drag the block down under the stick to hip height, trail elbow in front of the hip.",n:"2 min"},
   {id:"hm-finish",t:"Finish holds",d:"Ten slow swings, each held 3 seconds: weight on the lead foot, trail foot on its toe, belt buckle to the target.",n:"2 min"},
   {id:"hm-putt",t:"Putting mat",d:"Start-line gate (two tees just wider than the ball), then ten 1-metre putts in a row. Part of the stroke rebuild.",n:"5 min"}
 ];
@@ -2081,6 +2122,8 @@ var DRILLS=[
    steps:["Normal set-up, then slide the trail foot straight back about 15 cm.","Keep the shoulders and hips square to the target. Only the foot moves.","Hit 10, then copy the feel from a normal stance."]},
   {t:"Pump drill",tag:"Path · club drops inside",
    steps:["Swing to the top of your backswing.","Start down with a small bump of pressure onto the lead foot. As it happens, let the trail elbow drop towards your trail hip so the club falls in behind you. Stop at hip height.","Back to the top. Do it twice, then on the third time swing through and hit.","Order: bump first, the drop rides with it, then turn. No knee squat, and never let the arms start the downswing on their own."]},
+  {t:"Drag the block down",tag:"Home · trail arm delivery",
+   steps:["Set an alignment stick on an angle behind you, roughly along your shaft plane at address (lean it on a chair or wall).","Hold a foam block or thick book in your trail hand only. No club.","From the top, drag the block down and under the stick to about hip height. Face of the block points at the ground; trail elbow finishes in front of the trail hip.","If your hand moves out towards the stick, that's the over-the-top move. Stay under it.","Bump onto the lead foot as you start the drag, same order as the pump drill."]},
   {t:"Chair drill",tag:"Home · early extension",
    steps:["No club needed: cross your arms over your chest, hands on opposite shoulders.","Set up in golf posture with your backside just touching a chair back or wall.","Turn slowly back and through, keeping your backside touching the whole way. If it comes off, your hips pushed towards the ball.","Progress: hold a club across your chest the same way, then slow half swings with a club if you have the room."]},
   {t:"Finish hold",tag:"Every full swing",
