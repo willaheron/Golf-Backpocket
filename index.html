@@ -306,6 +306,7 @@
   .chk{border:1px solid var(--dg-acc);border-radius:12px;padding:10px 12px;margin-bottom:12px;font-size:13.5px;line-height:1.45}
   .chk-h{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--dg-acc);margin-bottom:4px}
   .chk-in{display:flex;gap:8px;margin-top:8px;align-items:center}.chk-in input{flex:1;min-width:0;padding:8px;font-size:15px}
+  .hm-links{display:flex;gap:14px;align-items:center}.hm-cal{color:var(--dg-acc);font-weight:600}
   .hm-off{display:block;font-size:13px;margin:-2px 0 10px;color:var(--muted)}
   .chk-ok{margin-top:8px;font-weight:600}
   .hm-hist{font-size:13px;line-height:1.45;margin:-4px 0 12px}
@@ -1119,6 +1120,7 @@ html:not([data-theme]){background:#edf1f6 !important}
           <summary>Step-by-step guide</summary>
           <ol class="dsteps">
             <li><b>Check it's mapped.</b> Search the course on <b>openyardage.com</b>. If it builds a yardage book, the course is mapped in OpenStreetMap. Download that PDF: it's the source for uphill and downhill numbers.</li>
+            <li><b>Check the mapping is complete on FairwayMapper.</b> Open <b>fairwaymapper.com</b>, search the course and go hole by hole: a red dot in the hole list usually means a feature is missing. Make sure every hole has a <b>green</b>, a <b>white tee box</b>, a <b>fairway</b> on par 4s and 5s, and <b>trees</b> where they're in play. Trace anything missing in <b>Mapping Tools</b> at the zoom where the existing bunkers sit exactly on the sand in the photo (the imagery shifts between zoom levels), then tap <b>Publish</b>. Allow a few hours for edits to reach the exports below.</li>
             <li><b>Export the map data</b> (easiest on a laptop). Go to <b>overpass-turbo.eu</b>, zoom in on the course, paste the query below, press <b>Run</b>, then <b>Export → GeoJSON → download</b>.</li>
             <li><b>Get the scorecard for your tees.</b> A screenshot of the white-tee scorecard (Hole19 or the club card) showing length, par and stroke index for all 18, plus the course rating and slope.</li>
             <li><b>Review the club's own course guide.</b> Before every new course, check the club website's hole-by-hole pages for three things: the official yardages for each tee, the pro tips or "how to play" notes, and any hole diagrams or course maps. Send Claude the page links and screenshots of the diagrams (the images can't be read from a link).</li>
@@ -1801,7 +1803,7 @@ function caddyCard(geo,d,i){
   h.flags.forEach(function(f){notes.push(f[0].toUpperCase()+f.slice(1)+".");});
   if(geo.cd.draft&&(d.courseId!=="warringah"||h.n>=10))notes.push(geo.cd.draft);
   var hidden=!!D.mapHidden;
-  var out='<div class="card hmap"><div class="hm-head"><h2 style="margin:0">Caddy</h2><span><button class="linkbtn" data-chipcard style="margin-right:14px">Chip card</button><button class="linkbtn" id="mapToggle">'+(hidden?"Show map":"Hide map")+'</button></span></div>';
+  var out='<div class="card hmap"><div class="hm-head"><h2 style="margin:0">Caddy</h2><span class="hm-links">@@CAL@@<button class="linkbtn" data-chipcard>Chip card</button><button class="linkbtn" id="mapToggle">'+(hidden?"Show map":"Hide map")+'</button></span></div>';
   if(CHK){
     var frontSand=h.haz.some(function(z){return z.gs&&z.carry<h.front+4&&z.reach<h.front;});
     var txt=CHK.type==="front"?
@@ -1830,13 +1832,15 @@ function caddyCard(geo,d,i){
   if(KO){
     var haveO=KO.type==="front"?!!M.front:!!M.near, openO=haveO||(window.__offOpen===key);
     if(openO){
-      out+='<div class="chk"><div class="chk-h">Calibrate</div>'+
+      var calBox='<div class="chk"><div class="chk-h">Calibrate</div>'+
         (haveO?'<div class="chk-ok" style="margin-top:0">Using your reading: '+(KO.type==="front"?'front '+M.front+' m; map said '+h.front:esc(KO.label)+' '+M.near+' m; map said '+M.mapNear+'. Whole hole shifted '+((M.near-M.mapNear)>0?'+':'')+(M.near-M.mapNear)+' m')+' <button class="linkbtn" data-oclear>Clear</button></div>':
         '<div class="chk-t">Laser the '+(KO.type==="front"?'<b>front edge</b>':(KO.lm?KO.lm:'<b>near edge of the '+esc(KO.label)+'</b>')+' (map: '+KO.map+' m)')+' and enter it. The caddy will adjust the read.</div>'+
-        '<div class="chk-in"><input type="number" inputmode="numeric" id="oA" placeholder="'+(KO.type==="front"?"Front (m)":"Near edge (m)")+'"><button class="btn btn-sm btn-pri" data-osave>Use</button></div>')+'</div>';
-    } else out+='<button class="linkbtn hm-off" data-oopen>Calibrate this hole</button>';
+        '<div class="chk-in"><input type="number" inputmode="numeric" id="oA" placeholder="'+(KO.type==="front"?"Front (m)":(KO.lm?"Distance (m)":"Near edge (m)"))+'"><button class="btn btn-sm btn-pri" data-osave>Use</button></div>')+'</div>';
+      out=out.replace('</span></div>','</span></div>'+calBox);
+    } else out=out.replace("@@CAL@@",'<button class="linkbtn hm-cal" data-oopen>Calibrate</button>');
     window.__ko={key:key,ko:KO};
   } else window.__ko=null;
+  out=out.replace("@@CAL@@","");
   out+='<div class="btn-row hm-btns"><button class="btn btn-sm" id="addTrouble">+ Trouble'+(trouble.length?' ('+trouble.length+')':'')+'</button><button class="btn btn-sm" id="myClubBtn">My club: '+(my?esc(shortName(my)):"Auto")+'</button></div></div>';
   return out;
 }
@@ -1914,7 +1918,7 @@ function liteCard(geo,d,i){
   out+='<div class="hm-plan">'+rows.map(function(r){return '<div class="prow"><div class="pic">'+CICON[r[0]]+'</div><div><div class="pk">'+r[1]+'</div><div class="pv">'+r[2]+'</div></div></div>';}).join("")+'</div>';
   if(ML.front)out+='<div class="chk"><div class="chk-h">Calibrate</div><div class="chk-ok" style="margin-top:0">Using your reading: front '+ML.front+' m; card said '+geo.len+' to the middle <button class="linkbtn" data-oclear>Clear</button></div></div>';
   else if(window.__offOpen===geo.key)out+='<div class="chk"><div class="chk-h">Calibrate</div><div class="chk-t">Laser the <b>front of the green</b> and enter it. The caddy will adjust the read.</div><div class="chk-in"><input type="number" inputmode="numeric" id="oA" placeholder="Front (m)"><button class="btn btn-sm btn-pri" data-osave>Use</button></div></div>';
-  else out+='<button class="linkbtn hm-off" data-oopen>Calibrate this hole</button>';
+  else out=out.replace('<span class="hint" style="margin:0">No map for this course yet</span>','<span class="hm-links"><button class="linkbtn hm-cal" data-oopen>Calibrate</button><button class="linkbtn" data-chipcard>Chip card</button></span>');
   out+='<div class="hint" style="margin-top:2px">Distance-only plan from the card and your carries. Hazards aren\'t known without a map, so use your eyes.</div></div>';
   return out;
 }
