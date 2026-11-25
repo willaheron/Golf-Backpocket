@@ -306,6 +306,7 @@
   .chk{border:1px solid var(--dg-acc);border-radius:12px;padding:10px 12px;margin-bottom:12px;font-size:13.5px;line-height:1.45}
   .chk-h{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--dg-acc);margin-bottom:4px}
   .chk-in{display:flex;gap:8px;margin-top:8px;align-items:center}.chk-in input{flex:1;min-width:0;padding:8px;font-size:15px}
+  .hm-off{display:block;font-size:13px;margin:-2px 0 10px;color:var(--muted)}
   .chk-ok{margin-top:8px;font-weight:600}
   .hm-hist{font-size:13px;line-height:1.45;margin:-4px 0 12px}
   .srow.wrap{flex-wrap:wrap}
@@ -1633,7 +1634,16 @@ function fairHalf(h,P,u){ if(!inOwnFair(h,P))return 0; var n=[-u[1],u[0]],L=0,R=
   return (L+R+1)/2*st; }
 function widthAt(h,P,u){return inOwnFair(h,P)?Math.round(fairHalf(h,P,u)*2/h.s):0;}
 function alongPl(pl,v){for(var i=0;i<pl.length-1;i++){var l=CE.d(pl[i],pl[i+1]);if(v<=l){var t=v/l;return [pl[i][0]+(pl[i+1][0]-pl[i][0])*t,pl[i][1]+(pl[i+1][1]-pl[i][1])*t];}v-=l;}return pl[pl.length-1];}
+function shiftHole(h,off){
+  if(!off)return h; var s=h.s,a=h.pl[0],b=h.pl[1],d=CE.d(a,b)||1,u=[(b[0]-a[0])/d,(b[1]-a[1])/d],T2=[a[0]-u[0]*off*s,a[1]-u[1]*off*s];
+  var o={}; for(var k in h)o[k]=h[k];
+  o.T=T2; o.pl=[T2].concat(h.pl.slice(1)); o.len=h.len+off; o.front=h.front+off; o.back=h.back+off;
+  o.haz=h.haz.map(function(z){var c={};for(var q in z)c[q]=z[q];c.reach=z.reach+off;c.carry=z.carry+off;return c;});
+  o.corner=h.corner?{d:h.corner.d+off,dir:h.corner.dir,i:h.corner.i}:null; o.cross=h.cross?[h.cross[0]+off,h.cross[1]+off]:null;
+  return o;
+}
 function planHole(h,opts){
+  if(opts&&opts.teeOff)h=shiftHole(h,opts.teeOff);
   opts=opts||{}; var RU=opts.rules||{}, C=carriesNow(), s=h.s, T=h.T, G=h.G, pl=h.pl, elev=(opts.elevOverride!=null?opts.elevOverride:(function(){var eb=(h.elev!=null?h.elev:(RU.adj||0)); if(eb<-15)eb=Math.round(-15+0.6*(eb+15)); return eb;})()+(RU.extra||0)), lenOff=opts.lenOff||0, wp=opts.windPct||0, pinOff=opts.pinOff||0;
   function playsLike(m){return Math.round((m+elev+pinOff)*(1+wp));}
   function playsFB(m){return Math.round((m+elev)*(1+wp));}
@@ -1751,6 +1761,22 @@ function holeCheck(h,cd){
   } else if(h.cross&&h.cross[1]-h.cross[0]>=8&&h.cross[0]>=120&&h.cross[0]<=280) return {type:"water",label:"Water"};
   return null;
 }
+function keyObstacle(h){
+  if(h.par===3)return {type:"front"};
+  if(h.cross&&h.cross[0]>=100)return {type:"obj",label:"water",map:h.cross[0]};
+  var z=h.haz.filter(function(z){return !z.gs&&z.reach>=100&&z.reach<=320;}).sort(function(a,b){return a.reach-b.reach;})[0];
+  if(z)return {type:"obj",label:(z.k==="water"?"water ":"bunker ")+z.side,map:z.reach};
+  // nothing to zap: pick something visible from the tee
+  var s=h.s,T=h.T;
+  if(h.corner&&h.fair.length){
+    var a=h.pl[1],L=CE.d(T,a),u=[(a[0]-T[0])/L,(a[1]-T[1])/L],last=null,seen=false;
+    for(var m=60;m<=380;m+=2){var P=[T[0]+u[0]*m*s,T[1]+u[1]*m*s]; if(inOwnFair(h,P)){seen=true;last=m;} else if(seen&&m>last+6)break;}
+    if(last&&last>=h.corner.d-10&&last<=340)return {type:"obj",label:"end of the fairway straight ahead",lm:"<b>back of the fairway through the dogleg</b>",map:last};
+  }
+  if(h.front<=330&&!h.corner)return {type:"obj",label:"front of the green",lm:"<b>front of the green</b>",map:h.front,green:true};
+  if(h.fair.length){for(var m2=20;m2<=200;m2+=2){if(inOwnFair(h,alongPl(h.pl,m2*s))){if(m2>=40)return {type:"obj",label:"start of the fairway",lm:"<b>start of the fairway</b>",map:m2};break;}}}
+  return {type:"obj",label:"front of the green",lm:"<b>front of the green</b>",map:h.front,green:true};
+}
 var CICON={tee:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M12 21v-8"/><path d="M8 13h8"/><circle cx="12" cy="7" r="4"/></svg>',
  app:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 21V4"/><path d="M6 4h11l-2.5 4L17 12H6"/></svg>',
  safe:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8.2-8 9-4.6-.8-8-4.5-8-9V6z"/></svg>'};
@@ -1764,7 +1790,10 @@ function caddyCard(geo,d,i){
   var CHK=holeCheck(h,geo.cd), M=(D.measure||{})[key]||{};
   if(CHK&&CHK.type==="front"&&M.front){popts.lenOff=M.front-h.front; popts.measured=true; popts.elevOverride=M.slope?(M.slope-M.front):(M.adj?0:null);
     if(M.adj){popts.lenOff=M.front-h.front;}}
-  if(CHK&&CHK.type==="water"&&M.near){popts.cross={a:M.near,b:M.far||null,label:CHK.label||"Water"};}
+  if(CHK&&CHK.type==="water"&&M.near){popts.cross={a:M.near,b:M.far||null,label:CHK.label||"Water"}; if(h.cross)popts.teeOff=M.near-h.cross[0];}
+  var KO=CHK?null:keyObstacle(h); if(KO&&KO.green)KO.elev=h.elev||0;
+  if(KO&&KO.type==="front"&&M.front){popts.lenOff=M.front-h.front; popts.measured=true; popts.elevOverride=0;}
+  if(KO&&KO.type==="obj"&&M.near&&M.mapNear!=null){popts.teeOff=M.near-M.mapNear;}
   var p=planHole(h,popts), hist=null, bump=0;
   if(h.par===3){hist=p3History(d.courseId,d.teeBox.name,h.n); bump=p3Bump(hist,p.auto3,WI.str);
     if(bump&&!my){popts.p3bump=bump; p=planHole(h,popts);} window.__p3plays=p.plays;}
@@ -1798,6 +1827,16 @@ function caddyCard(geo,d,i){
   if(!hidden)out+='<div class="hm-map"><svg viewBox="0 0 '+h.vw+' '+h.vh+'" xmlns="http://www.w3.org/2000/svg">'+h.svg+'<g>'+p.overlay+'</g></svg></div>';
   out+='<div class="hm-plan">'+p.rows.map(function(r){return '<div class="prow"><div class="pic">'+CICON[r[0]]+'</div><div><div class="pk">'+r[1]+'</div><div class="pv">'+r[2]+'</div></div></div>';}).join("")+'</div>';
   var cn=(geo.cd.notes||{})[String(h.n)]; if(cn)out+='<div class="hm-clubnote"><div class="pk" style="margin-bottom:4px">'+esc(geo.cd.notesLabel||"Club notes")+'</div>'+esc(cn)+'</div>';
+  if(KO){
+    var haveO=KO.type==="front"?!!M.front:!!M.near, openO=haveO||(window.__offOpen===key);
+    if(openO){
+      out+='<div class="chk"><div class="chk-h">Calibrate</div>'+
+        (haveO?'<div class="chk-ok" style="margin-top:0">Using your reading: '+(KO.type==="front"?'front '+M.front+' m; map said '+h.front:esc(KO.label)+' '+M.near+' m; map said '+M.mapNear+'. Whole hole shifted '+((M.near-M.mapNear)>0?'+':'')+(M.near-M.mapNear)+' m')+' <button class="linkbtn" data-oclear>Clear</button></div>':
+        '<div class="chk-t">Laser the '+(KO.type==="front"?'<b>front edge</b>':(KO.lm?KO.lm:'<b>near edge of the '+esc(KO.label)+'</b>')+' (map: '+KO.map+' m)')+' and enter it. The caddy will adjust the read.</div>'+
+        '<div class="chk-in"><input type="number" inputmode="numeric" id="oA" placeholder="'+(KO.type==="front"?"Front (m)":"Near edge (m)")+'"><button class="btn btn-sm btn-pri" data-osave>Use</button></div>')+'</div>';
+    } else out+='<button class="linkbtn hm-off" data-oopen>Calibrate this hole</button>';
+    window.__ko={key:key,ko:KO};
+  } else window.__ko=null;
   out+='<div class="btn-row hm-btns"><button class="btn btn-sm" id="addTrouble">+ Trouble'+(trouble.length?' ('+trouble.length+')':'')+'</button><button class="btn btn-sm" id="myClubBtn">My club: '+(my?esc(shortName(my)):"Auto")+'</button></div></div>';
   return out;
 }
@@ -1813,6 +1852,10 @@ function wireCaddy(geo){
   var ms=document.querySelector("#pBody [data-msave]"); if(ms)ms.onclick=function(){var c=window.__chk; if(!c)return;
     var A=parseInt(document.getElementById("mA").value,10), bEl=document.getElementById("mB"), B=bEl?parseInt(bEl.value,10):NaN; if(!(A>0))return;
     D.measure=D.measure||{}; D.measure[c.key]=c.type==="front"?{front:A,adj:true}:{near:A,far:B>A?B:null}; save(); renderHole();};
+  var oo=document.querySelector("#pBody [data-oopen]"); if(oo)oo.onclick=function(){window.__offOpen=window.__ko&&window.__ko.key;renderHole();};
+  var os=document.querySelector("#pBody [data-osave]"); if(os)os.onclick=function(){var c=window.__ko; if(!c)return; var A=parseInt(document.getElementById("oA").value,10); if(!(A>0))return;
+    D.measure=D.measure||{}; D.measure[c.key]=c.ko.type==="front"?{front:A,adj:true}:{near:A,mapNear:c.ko.map+(c.ko.green?(c.ko.elev||0):0)}; window.__offOpen=null; save(); renderHole();};
+  var oc=document.querySelector("#pBody [data-oclear]"); if(oc)oc.onclick=function(){var c=window.__ko; if(c&&D.measure){delete D.measure[c.key]; save(); renderHole();}};
   var mc=document.querySelector("#pBody [data-mclear]"); if(mc)mc.onclick=function(){var c=window.__chk; if(c&&D.measure){delete D.measure[c.key]; save(); renderHole();}};
   var m=document.getElementById("myClubBtn"); if(m)m.onclick=function(){openMyClub(geo);};
 }
@@ -1850,6 +1893,8 @@ function openMyClub(geo){
 }
 function liteCard(geo,d,i){
   var n=d.holeNums[i], par=d.pars[i], len=geo.len, C=carriesNow(), L=layupNow(), rows=[], note=(geo.cd.notes||{})[String(n)];
+  var ML=(D.measure||{})[geo.key]||{}; if(ML.front)len=ML.front+8;
+  window.__ko={key:geo.key,ko:{type:"front"}};
   var stL=d.state[i], pinL=0; if(stL.pin==="F")pinL=-8; if(stL.pin==="B")pinL=8;
   if(par===3){var pl3=len+pinL; window.__p3plays=pl3; rows.push(["tee","Club","<b>"+clubFor(pl3,C)+"</b> · "+pl3+" m to the pin (card distance; no elevation data for this course)."]);}
   else{
@@ -1867,6 +1912,9 @@ function liteCard(geo,d,i){
   if(note)out+='<div class="hm-clubnote">'+esc(note)+'</div>';
   if(par===3)out+='<div class="hm-ctl"><div class="hm-ctl-row"><span class="hm-ctl-l">Pin</span>'+[["F","Front"],["M","Middle"],["B","Back"]].map(function(x){return '<button class="fchip sm'+((stL.pin||"M")===x[0]?' on':'')+'" data-pin="'+x[0]+'">'+x[1]+'</button>';}).join("")+'</div></div>';
   out+='<div class="hm-plan">'+rows.map(function(r){return '<div class="prow"><div class="pic">'+CICON[r[0]]+'</div><div><div class="pk">'+r[1]+'</div><div class="pv">'+r[2]+'</div></div></div>';}).join("")+'</div>';
+  if(ML.front)out+='<div class="chk"><div class="chk-h">Calibrate</div><div class="chk-ok" style="margin-top:0">Using your reading: front '+ML.front+' m; card said '+geo.len+' to the middle <button class="linkbtn" data-oclear>Clear</button></div></div>';
+  else if(window.__offOpen===geo.key)out+='<div class="chk"><div class="chk-h">Calibrate</div><div class="chk-t">Laser the <b>front of the green</b> and enter it. The caddy will adjust the read.</div><div class="chk-in"><input type="number" inputmode="numeric" id="oA" placeholder="Front (m)"><button class="btn btn-sm btn-pri" data-osave>Use</button></div></div>';
+  else out+='<button class="linkbtn hm-off" data-oopen>Calibrate this hole</button>';
   out+='<div class="hint" style="margin-top:2px">Distance-only plan from the card and your carries. Hazards aren\'t known without a map, so use your eyes.</div></div>';
   return out;
 }
@@ -2266,7 +2314,10 @@ function renderHole(){
 
   document.querySelectorAll("#pBody [data-chipcard]").forEach(function(b){b.onclick=openChipCard;});
   if(geo&&geo.h)wireCaddy(geo);
-  else if(geo){var stz=D.draft.state[D.draft.idx]; document.querySelectorAll("#pBody [data-pin]").forEach(function(b){b.onclick=function(){stz.pin=b.dataset.pin==="M"?null:b.dataset.pin;save();renderHole();};});}
+  else if(geo){var stz=D.draft.state[D.draft.idx]; document.querySelectorAll("#pBody [data-pin]").forEach(function(b){b.onclick=function(){stz.pin=b.dataset.pin==="M"?null:b.dataset.pin;save();renderHole();};});
+    var oo2=document.querySelector("#pBody [data-oopen]"); if(oo2)oo2.onclick=function(){window.__offOpen=geo.key;renderHole();};
+    var os2=document.querySelector("#pBody [data-osave]"); if(os2)os2.onclick=function(){var A=parseInt(document.getElementById("oA").value,10); if(!(A>0))return; D.measure=D.measure||{}; D.measure[geo.key]={front:A,adj:true}; window.__offOpen=null; save(); renderHole();};
+    var oc2=document.querySelector("#pBody [data-oclear]"); if(oc2)oc2.onclick=function(){if(D.measure){delete D.measure[geo.key]; save(); renderHole();}};}
   document.getElementById("pPrev").disabled=(i===0);
   var nx=document.getElementById("pNext"); nx.textContent=last?"Finish round":"Next hole";
 
